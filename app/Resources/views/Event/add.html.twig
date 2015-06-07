@@ -1,0 +1,42 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Nowe wydarzenie{% endblock %}
+
+{% block body %}
+    <div class="row no-margin">
+        <form method="post" action="{{ path('add_event') }}" novalidate>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.city, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.loacation, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.image, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.capacity, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.type, {'attr': {'class': 'form-control'}}) }}
+                {{ form_row(form.startDate) }}
+                {{ form_row(form.endDate) }}
+                {{ form_row(form.featured) }}
+                <h3>Drużyna</h3>
+                <ul class="tags">
+                    {% for team in form.teams %}
+                        {%if loop.first %}
+                            {{ form_label(form.name, 'Twoja drużyna') }}
+                            {{ form_row(team.name, {'attr': {'class': 'form-control', 'label' : 'Twoja drużyna'}}) }}
+                        {% else %}
+                            {{ form_label(form.name, 'Przeciwna drużyna') }}
+                            {{ form_row(team.name, {'attr': {'class': 'form-control', 'label' : 'Przeciwna drużyna'}}) }}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>  
+
+            <button type="submit" class="btn btn-primary">Utwórz</button>
+            {{ form_end(form) }}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock %}

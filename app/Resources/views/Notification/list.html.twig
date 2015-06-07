@@ -1,0 +1,41 @@
+<div class="width-220  notifications-menu">
+    {% set ifOdd = 0 %}
+    {% for notify in notifications %}
+        <div class="row no-margin">
+            <a href="#">
+                <li>
+                    {% set ifOdd = ifOdd + 1 %}
+                    {% for user in notify.user %}
+                        <div class="col-md-4 {% if ifOdd % 2 == 0 %} 
+                             pull-right 
+                        {% else %}
+                            pull-left
+                            {% endif %}" >
+                                <img src="{{ user.imageName }}" alt="{{ user.username }}" class="rounded small-thumbnail" />
+                            </div>
+                            <div class="col-md-8">
+                                <a href="{{ path('show_user',{'id':user.id}) }}">
+                                    <span class="text-success small">{{ user.username }}</span>
+                                </a>
+                                {% endfor %}
+                                    {%if notify.type == 3 %}
+                                        <span class="text-muted small"> dodał wydarzenie o nazwie </span>
+                                    {% elseif notify.type == 4 %}
+                                        <span class="text-muted small"> weźmie udział w </span>
+                                    {% elseif notify.type == 5 %}
+                                        <span class="text-muted small"> zrezygnował z </span> 
+                                    {% elseif notify.type == 6 %}
+                                        <span class="text-muted small"> zrezygnował z </span>
+                                    {% endif %}
+                                    {% for event in notify.event %}
+                                        <a href="{{ path('show_event', { 'id' : event.id }) }}">
+                                            <span class="text-warning small">{{ event.name }}</span>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </li> 
+                        </a>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                    </div>

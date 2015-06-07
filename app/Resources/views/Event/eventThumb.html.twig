@@ -1,0 +1,26 @@
+<a href="{{ path('show_event', { 'id' : event.id }) }}">
+    <div class="col-sm-6 col-md-3 event-thumbnail">
+        <div class="thumbnail clearfix">
+            <img src="{{ event.image }}" alt="">
+            <div class="caption">
+                <h5>{{ event.name }}</h5>
+                <p>Utworzył: {{ event.admin }}</p>
+                <p>{{ event.startDate | date('d-m-Y | h:m')}}</p>
+                <p>Miasto: {{ event.city }}</p>
+                <p>{{ event.loacation }}</p>
+                {% set freePlaces = event.capacity - event.players | length %}
+                <p>Wolne miejsca: 
+                    {% if freePlaces > 3 %}
+                        <span class="text-success">
+                        {% else %}
+                            <span class="text-danger">
+                            {% endif %} 
+                            {{ freePlaces }}
+                        </span>
+                        z {{ event.capacity }}</p>
+
+            </div>
+            <a href="" class="button-jumpin pull-right green hide mouseover">Weź udział</a>
+        </div>
+    </div>
+</a>

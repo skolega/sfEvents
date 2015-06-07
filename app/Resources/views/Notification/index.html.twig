@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Index{% endblock %}
+
+{% block body %}
+    <div class="row no-margin">
+        <div class="col-md-8">
+            <ul class="list-group">
+                {% set ifOdd = 0 %}
+                {% for notify in notifications %}
+                    <li class="list-group-item">
+                        <div class="row no-margin">
+                            {% set ifOdd = ifOdd + 1 %}
+                            {% for user in notify.user %}
+                                <div class="col-md-2 {% if ifOdd % 2 == 0 %} 
+                                     pull-right 
+                                {% else %}
+                                    pull-left
+                                    {% endif %}" >
+                                        <img src="{{ user.imageName }}" alt="{{ user.username }}" class="rounded" />
+                                    </div>
+                                    <div class="col-md-10">
+                                        <a href="{{ path('show_user',{'id':user.id}) }}">
+                                            <h4> <span class="text-success">{{ user.username }}</span> </h4>
+                                        </a>
+                                        {% endfor %}
+                                            {%if notify.type == 3 %}
+                                                <span class="text-muted"> dodał wydarzenie o nazwie </span>
+                                            {% elseif notify.type == 4 %}
+                                                <span class="text-muted"> weźmie udział w </span>
+                                            {% elseif notify.type == 5 %}
+                                                <span class="text-muted"> zrezygnował z </span> 
+                                            {% elseif notify.type == 6 %}
+                                                <span class="text-muted"> zrezygnował z </span>
+                                            {% endif %}
+                                            {% for event in notify.event %}
+                                                <a href="{{ path('show_event', { 'id' : event.id }) }}">
+                                                    <h4><span class="text-warning">{{ event.category }} w {{ event.name }}</span></h4>
+                                                    Które odbedzie się {{ event.startDate | date('Y/m/d - h:m')}}
+                                                    w {{ event.city }}. 
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </li> 
+                            </ul>
+                            {% endfor %}
+                            </div>
+                            {% endblock %}

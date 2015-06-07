@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <div>
+        {% for entity in entities %}
+            <div class="col-md-2">
+                <a href="{{ path('events_category_list', {'category':entity.id}) }}">
+                    <img src="{{ entity.icon }}"/>
+                    <h4>{{ entity.name }}</h4>
+                </a>
+                {% if app.user.hasRole("ROLE_ADMIN") %}
+                    <a class="btn btn-warning" href="{{ path('category_edit', { 'id': entity.id }) }}">Edytuj</a>
+                {% endif %}
+            </div>
+            {% if loop.index % 6 == 0 %}
+            </div>
+            <div>
+            {% endif %}
+            {% if loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {% if app.user.hasRole("ROLE_ADMIN") %}
+        <a href="{{ path('category_new') }}" class="btn btn-primary">
+            Dodaj nową kategorię
+        </a>
+    {% endif %}
+{% endblock %}

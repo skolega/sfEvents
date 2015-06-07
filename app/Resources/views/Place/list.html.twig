@@ -1,0 +1,78 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Place:list{% endblock %}
+
+{% block body %}
+    <div class="row no-margin">
+        <div class="col-sm-3 sidebar-left fixed smoked no-margin">
+            <h1>Wyszukaj Obiekt</h1>
+            <hr>
+            <form id="search-place" class="navbar-form navbar-left" role="search" action="{{ path('place_search') }}" method="GET">
+                <div class="form-group">
+                    <div class="row">
+                        <select id="place-city-input" class="form-control" name="city" placeholder="Miasto">
+                            <option></option>
+                            {% for city in allPlaces %}
+                                <option>{{ city.city }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-group">
+                            <select id="place-category-input" class="form-control" name="category" placeholder="Kategoria">
+                                <option></option>
+                                {% for category in categories %}
+                                    <option>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="button-jumpin">Szukaj</button>
+            </form>
+        </div>
+        <div class="col-sm-3 no-margin"></div>
+        <div class="col-sm-9 no-margin">
+            {% if (places | length) > 1 %}
+                {% for place in places %}
+                    {% if loop.first or (loop.index % 4) == 0 %}
+                        <div class="row no-margin">
+                        {% endif %}
+                        {% if app.user == place.admin %}
+                            <a href="{{ path('place_edit', { 'id':place.id }) }}">
+                            {% else %}
+                                <a href="{{ path('place_show', { 'id':place.id }) }}">
+                                {% endif %}
+                                <div class="col-sm-6 col-md-3 event-thumbnail">
+                                    <div class="thumbnail clearfix">
+                                        <img src="{{ place.imageName }}" alt="">
+                                        <div class="caption">
+                                            <h5>{{ place.name }}</h5>
+                                            <p>Kategoria:
+                                                {% for category in place.category %}
+                                                    {{ category.name }}
+                                                {% endfor %}
+                                            </p>
+                                            <p>Miasto: {{ place.city }}</p>
+                                            <p>{{ place.address }}</p>
+                                            <p>Kontakt: {{ place.telephoneNb }}</p>
+                                        </div>
+                                        <a href="" class="button-jumpin pull-right green hide mouseover">Zarezerwuj</a>
+                                    </div>
+                                </div>
+                            </a>
+                            {% if loop.last or (loop.index% 4) == 0 %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="row no-margin">
+                    {{ knp_pagination_render(places) }}
+                </div>
+            {% else %}
+                <h4>Brak Obiektów spełniających wybrane kryteria</h4>
+                {% if app.user %}
+                    <h4> Możesz też dodać obiekt </h4>
+                    <a href ="{{ path('place_new') }}" class="btn btn-primary"><h4>Dodaj obiekt</h4></a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

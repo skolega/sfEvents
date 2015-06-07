@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Place list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>Address</th>
+                <th>Telephonenb</th>
+                <th>Description</th>
+                <th>Enabled</th>
+                <th>Dateadded</th>
+                <th>Maxcapacity</th>
+                <th>Price</th>
+                <th>Featured</th>
+                <th>Imagename</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('place_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.city }}</td>
+                <td>{{ entity.address }}</td>
+                <td>{{ entity.telephoneNb }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.enabled }}</td>
+                <td>{% if entity.dateAdded %}{{ entity.dateAdded|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.maxCapacity }}</td>
+                <td>{{ entity.price }}</td>
+                <td>{{ entity.featured }}</td>
+                <td>{{ entity.imageName }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('place_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('place_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('place_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

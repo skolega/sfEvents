@@ -1,0 +1,101 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:User:addFriend{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-3 col-sm-3">
+            <div class="row">
+                <form class="navbar-form navbar-left" role="search" action="{{ path('search_friend') }}" method="GET">
+                    <div class="form-group">
+                        <input type="text" name="query" class="form-control" placeholder="Wyszukaj użytkownika">
+                    </div>
+                    <button type="submit" class="btn btn-default">Szukaj</button>
+                </form>
+            </div>
+            {% if searchUsers != null %}
+                <ul class="list-group">
+                    <li class="list-group-item smoked">
+                        {% if app.request.attributes.get('_route') == 'list_friends' %}
+                            <h5>Możesz znać</h5>
+                        {% else %}
+                            <h5>Wyniki szukania</h5>
+                        {% endif %}
+                    </li>
+                    {% for result in searchUsers %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img src="{{ result.imageName }}" alt="" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <a href="{{ path('show_user',{'id':result.id}) }}">Użytkownik: {{ result }}</a></br>
+                                    <a href="{{ path('show_user',{'id':result.id}) }}">{{ result.name }} {{ result.surname }}</a>
+                                    <div>
+                                        {% set countSameFriends = 0 %}
+                                        {% for myFriend in result.friendsWithMe %}
+                                            {% if myFriend.id in ids %}
+                                                {% set countSameFriends = countSameFriends + 1 %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <p class="small text-success">Nasi znajomi: {{ countSameFriends }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="{{ path('add_friend', {'id': result}) }}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                        {% if app.request.attributes.get('_route') == 'list_friends' %}
+                                            <a href="{{ path('hide_user', {'id': result.id}) }}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></a>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    <a href="">
+                        <li class="list-group-item btn btn-primary">
+                            Pokaż więcej znajomych
+                        </li>
+                    </a>
+                </ul>
+            {% else %}
+                Brak wyników
+            {% endif %}
+        </div>
+        <div class="col-lg-9 col-sm-9">
+            <p class="bg-primary">
+                Wydarzenia Znajomych
+            </p>
+            <div class="row">
+                {% for event in events %}
+                    {% include 'Event/eventThumb.html.twig' %}
+                {% endfor %}
+            </div>
+            <p class="bg-primary">
+                Lista Znajomych
+            </p>
+            {% for friend in friends %}
+                {% if loop.first or (loop.index % 3) == 0  %}
+                    <div class="row">
+                    {% endif %}
+                    <div class="thumbnail col-sm-4">
+                        <div class="col-sm-4">
+                            <img src="{{ friend.imageName }}" alt="" />
+                        </div>
+                        <div class="col-lg-6">
+                            <a href="{{ path('show_user',{'id':friend.id}) }}">Nick: {{ friend }}</a>
+                            <br>
+                            <p>Imię i nazwisko: </p>
+                            <a href="{{ path('show_user',{'id':friend.id}) }}">{{ friend.name }} {{ friend.surname }}</a>
+                            <p class="small text-success">Punkty: {{ friend.points }}</p>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="{{ path('delete_friend', {'id':friend.id}) }}"<span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                        </div>
+                    </div>
+                    {% if loop.last or (loop.index % 3) == 0  %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

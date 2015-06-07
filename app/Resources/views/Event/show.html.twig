@@ -1,0 +1,35 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Event:show{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% for event in events %}
+            {% if loop.first or (loop.index % 4) == 0  %}
+                <div class="row">
+                {% endif %} 
+                <a href="{{ path('show_event', { 'id' : event.id }) }}">
+                    <div class="col-sm-6 col-md-3 event-thumbnail">
+                        <div class="thumbnail clearfix">
+                            <img src="{{ event.image }}" alt="">
+                            <div class="caption">
+                                <h5>{{ event.name }}</h5>
+
+                            <p>Utworzył: {{ event.admin }}</p>
+                            <p>{{ event.startDate | date('d-m-Y | h:m')}}</p>
+                            <p>Miasto: {{ event.city }}</p>
+                            <p>{{ event.loacation }}</p>
+
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% if loop.last or (loop.index % 4) == 0  %}
+            </div>
+        {% endif %} 
+        {% endfor %}
+        </div>
+        <div class="row">
+            {{ knp_pagination_render(events) }}
+        </div>
+        {% endblock %}

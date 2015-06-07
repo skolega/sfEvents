@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for category in categories %}
+        {% set eventCount = 0 %}
+        <div class="clearfix"></div>
+        <h5>{{ category.name }}</h5>                
+
+        {% for event in events %}
+            {% if event.category == category %}
+                {% set eventCount = eventCount+1 %}
+                {% if eventCount < 5 %}
+                    {% if (eventCount % 4) == 0 %}
+                        <div class="row">
+                        {% endif %}
+                        {% include 'Event/eventThumb.html.twig' %}
+                        {% if (eventCount % 4) == 0 %}
+                        </div>
+                        <a href="{{ path('events_category_list', {'category': category.id}) }}" class="button-jumpin pull-right green">Zobacz więcej w tej kategorii</a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+    {% endfor %}
+{% endblock %}

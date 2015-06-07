@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+
+    <div class="row no-margin">
+        <div class="col-md-12">        
+            <h1>Obiekt : {{ entity.name }}</h1>
+            <img src="{{ entity.imageName }}" alt="{{ entity.name }}"/>
+        </div>
+        <div class="row no-margin">
+            <div class="col-md-9"> 
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Miasto</th>
+                            <td>{{ entity.city }}</td>
+                        </tr>
+                        <tr>
+                            <th>Adres</th>
+                            <td>{{ entity.address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Administrator</th>
+                                {% for admin in entity.admin %}
+                                <td><a href="{{ path('show_user', {'id':admin.id}) }}">{{ admin.username }}</a></td>
+                                {% endfor %}
+                        </tr>
+                        <tr>
+                            <th>Telefon</th>
+                            <td>{{ entity.telephoneNb }}</td>
+                        </tr>
+                        <tr>
+                            <th>Opis</th>
+                            <td>{{ entity.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Data Dodania</th>
+                            <td>{{ entity.dateAdded|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Pojemność</th>
+                            <td>{{ entity.maxCapacity }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cena</th>
+                            <td>{{ entity.price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3">
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a class="btn btn-success" href="{{ path('place') }}">
+                            Wróć do listy obiektów
+                        </a>
+                    </li>
+                    {% for admin in entity.admin %}
+                    {% if app.user == admin %}
+                        <li class="list-group-item">
+                            <a class="btn btn-warning" href="{{ path('place_edit', { 'id': entity.id }) }}">
+                                Edytuj obiekt
+                            </a>
+                        </li>
+                        <li class="list-group-item">{{ form(delete_form) }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endblock %}

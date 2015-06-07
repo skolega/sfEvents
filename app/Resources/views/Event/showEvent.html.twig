@@ -1,0 +1,160 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Event:show{% endblock %}
+
+{% block body %}
+    <div class="row space-top no-margin">
+        {% for single in event %}
+            <div class="col-sm-9 col-md-9 event-thumbnail">
+                <div class="thumbnail clearfix smoked">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="caption">
+                                <h3>{{ single.name }}</h3>
+                                <h5>Opis :</h5>
+                                <p>{{ single.description }}
+                                <p>Utworzył: {{ single.admin }}</p>
+                                <p>{{ single.startDate | date('d-m-Y | h:m')}}</p>
+                                <p>Miasto: {{ single.city }}</p>
+                                <p>{{ single.loacation }}</p>
+                                {% set freePlaces = single.capacity - single.players | length %}
+                                <p>Wolne miejsca: 
+                                    {% if freePlaces > 3 %}
+                                        <span class="text-success">
+                                        {% else %}
+                                            <span class="text-danger">
+                                            {% endif %} 
+                                            {{ freePlaces }}
+                                        </span>
+                                        z {{ single.capacity }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <img src="http://lorempixel.com/400/300/sports/" alt="" class="pull-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <div class="content-right">
+                    LISTA GRACZY
+                    {{ render(controller('AppBundle:Team:list', {'id': single.id } )) }}
+                    <table class="table table-hover">
+                        <tr>
+                            <td><p>Administrator</p></td>
+                        </tr>
+                        <tr class="success">
+                            <td>
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                {{ single.admin }}
+                                {% if app.user and app.user != single %}
+                                    <div class="pull-right">
+                                        <a href="{{ path('add_friend', {'id': single.admin }) }}">
+                                            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                                        </a>
+                                        <a href="{{ path('new_private_message',{'id':single.admin}) }}">
+                                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><br></td>
+                        </tr>
+                        <tr>
+                            <td><p>Szatnia</p></td>
+                        </tr>
+                        {% set ifPlayer = false %}
+
+                        {% for user in single.players %}                            
+                            {% if app.user == user %}
+                                {% set ifPlayer = true %}
+                            {% endif %}
+
+                            {% set ifInTeam = false %}
+
+                            {% for team in single.teams %}
+                                {% for player in team.players %}
+                                    {% if player == user %}
+                                        {% set ifInTeam = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            {% if ifInTeam == false %}
+                                <tr {% if app.user == user %} class="green" {% endif %}>
+                                    <td><a href="{{ path('show_user',{'id':user.id}) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>  
+                                            {{ user.username }} 
+                                            <p class="badge small">
+                                                {{ user.points }}</p></a>
+                                        <div class="pull-right">
+                                            {% if app.user != user and app.user %}
+                                                <a href="{{ path('add_friend', {'id': user}) }}"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+                                                <a href="{{ path('new_private_message',{'id':user.id}) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
+                                                {% endif %}   
+                                                {% if (app.user == single.admin) or (app.user == user) %}
+                                                <a href="#"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                                                {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    {% if ( single.capacity > single.players | length ) %}
+                        {% if (app.user == single.admin) %}
+                            <a href="{{ path('list_friends') }}" class="btn btn-info">Zaproś użytkownika</a>
+                        {% elseif (ifPlayer == false) %}
+                            <a href="{{ path('add_player', {'id': single.id }) }}" class="btn btn-info">Wpisz się</a>
+                        {% else %}
+                            <a href="{{ path('resign_player', {'id': single.id }) }}" class="btn btn-danger">Wypisz się</a>
+                        {% endif %}
+                    {% else %}
+                        {% if (ifPlayer == true) %}
+                            <a href="{{ path('resign_player', {'id': single.id }) }}" class="btn btn-danger">Wypisz się</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="content-right">
+                    WIADOMOŚCI
+                    <table class="table table-hover">
+
+                        {% for message in messages %}
+                            {% if messages %}
+                                <tr>
+                                    <td>
+                                        <p>{{ message.message }}</p>
+                                        <p class="small">Dodano {{ message.createdAt | date('d/m/Y') }} przez {{ message.createdBy }} 
+                                            <a href="#" class="pull-right"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td>
+                                        <p>Bądź pierwszy, naspisz wiadomość</p>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    <div class="row no-margin">
+                        {% if not app.user %}
+                            <p>Aby móc dodawać komentarz musisz się wcześniej <a href="{{ path('fos_user_security_login') }}" title="Formularz logowania">zalogować</a>.</p>
+                        {% else %}
+                            <form method="post" novalidate>
+                                <div class="form-group">
+                                    {{ form_row(form.message) }}
+                                </div>
+                                {{ form_rest(form) }}
+                                <input class="btn btn-success" type="submit" value="Opublikuj" />
+                            </form>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

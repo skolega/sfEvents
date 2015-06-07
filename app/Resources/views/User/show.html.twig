@@ -1,0 +1,57 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:User:show{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-9">
+            {% for event in events %}
+                {% include 'Event/eventThumb.html.twig' %}
+            {% endfor %}
+        </div>
+        <div class="col-sm-3 sidebar-left smoked">
+            <ul class="list-group">
+                <li  class="list-group-item">
+                    <div class="row">
+                        </br>
+                        <div class="col-sm-4">
+                            </br>
+                            <img src="{{ user.imageName }}" alt=""/>
+                        </div>
+                        <div class="col-sm-8">
+                            <h4>Imię i Nazwisko</h4>
+                            {{ user.name }} {{ user.username }}
+                            <h4>Użytkownik</h4>
+                            {{ user.username }}
+                        </div>
+                    </div>
+
+                    <h4>Preferowane Miasto</h4>
+                    {{ user.preferedCity }}
+                </li>
+                <li  class="list-group-item">
+                    <h4>Punkty</h4>
+                    {{ user.points }}
+                </li>
+                {% if user.team | length > 0 %}
+                    <li  class="list-group-item">
+                        <h4>Drużyny</h4>
+                        {% for team in user.team %}
+                            {{ team.name }}
+                        {% endfor %}
+                    </li>
+                {% endif %}
+                {% if user.myFriends | length > 0 %}
+                    <li  class="list-group-item">
+                        <h4>Znajomi</h4>
+                        {% for friend in user.getMyFriends %}
+                            <a href="{{ path('show_user',{'id':friend.id}) }}">
+                                <img src="{{ friend.imageName }}" alt="{{ friend.name }} {{ friend.surname }}"/>
+                            </a>
+                        {% endfor %}
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

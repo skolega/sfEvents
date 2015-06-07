@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('bundles/app/css/style.css') }}" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        {% block navbar %}
+            <nav class="navbar navbar-fixed-top navbar-top">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{ path('homepage') }}">
+                            <img src="{{ asset('images/wyskocz-na-logo.png') }}" alt="jumpingo_logo"></a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="{{ path('category') }}">KATEGORIE <span class="sr-only">(current)</span></a></li>
+                            <li><a href="{{ path('place') }}">OBIEKTY</a></li>
+                            <li><a href="#">TURNIEJE</a></li>
+                            <li><a href="">WOJNA DRUŻYN</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{{ path('add_event') }}" class="button-jumpin"> + | Dodaj wydarzenie</a></li>
+                                {% if app.user %}
+                                <li class="dropdown notifications" data-path="{{ path('hide_notifications') }}">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-globe" aria-hidden="true">
+                                            {{ render(controller('AppBundle:Default:notificationBadge')) }}
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {{ render(controller('AppBundle:Notification:list', {'user': app.user } )) }}
+                                        <a href="{{ path('index_notification') }}"><p class="text-muted text-center">Zobacz wszystkie</p></a>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if app.user %}
+                                <li class="dropdown messages" data-path="{{ path('hide_private_messages') }}">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-envelope badge-message" aria-hidden="true">
+                                            {{ render(controller('AppBundle:Default:messageBadge')) }}
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {{ render(controller('AppBundle:PrivateMessage:list')) }}
+                                        <a href="#"><p class="text-muted text-center">Zobacz wszystkie</p></a>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if app.user %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ app.user.username }} <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Panel</a></li>
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                            <li><a href="{{ path('admin') }}">Panel admina</a></li>
+                                            {% endif %}
+                                        <li class="divider"></li>
+                                        <li><a href="{{ path('show_user_events', {'id': app.user.getId() }) }}">Moje eventy</a></li>
+                                        <li><a href="{{ path('list_friends') }}">Znajomi</a></li>
+                                        <li><a href="#">Moja Liga</a></li>
+                                        <li><a href="#">Zaproszenia</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{{ path('fos_user_profile_edit') }}">Profil</a></li>
+                                        <li><a href="#">Ustawienia</a></li>
+                                        <li><a href="#">Statystyki</a></li>
+                                        <li><a href="#">Konto</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{{ path('fos_user_security_logout') }}">Wyloguj</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Witaj Nieznajomy<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ path('fos_user_security_login') }}">zaloguj się</a></li>
+                                        <li><a href="{{ path('fos_user_registration_register') }}">zarejestruj się</a></li>
+                                    </ul>
+                                </li>   
+                            {% endif %}
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+            {% if app.user %}
+                <div class="fixed avatar">
+                    <img src="http://lorempixel.com/80/80/people/" class="rounded">
+                    {% if app.user.points %}
+                        <p class="badge user-points">{{ app.user.points }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        {% endblock %}
+        <div class="row nav-space no-margin ">
+            {% if (app.request.get('_route') == 'homepage') or (app.request.get('_route') == 'events_category_list') %}
+                <div class="col-lg-3 sidebar-left fixed smoked">
+                    {% block sidebar %}
+
+                        <h1>Szukaj Eventu</h1>
+                        <hr>
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <label>Miasto</label></br>
+                                <input type="text" class="form-control"></br>
+                                <label>Data</label></br>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control half"></br>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control half"></br>
+                                    </div>
+                                </div>
+                                <label>Szukane słowo</label></br>
+                                <input type="text" class="form-control"></br>
+                                <label>Znajomy</label></br>
+                                <input type="text" class="form-control"></br>
+                            </div>
+                            <button type="submit" class="button-jumpin">Szukaj</button>
+                        </form>
+                    {% endblock %}
+                </div>
+                <div class="col-lg-3"></div>
+                <div class="col-lg-9 no-margin">
+                    {% for key, messages in app.session.getFlashBag() %}
+                        {% if key in ['success', 'warning', 'danger', 'info'] %}
+                            {% for msg in messages %}
+                                <div class="alert alert-{{ key }} alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{ msg }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+            <script src="{{ asset('bundles/app/js/main.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

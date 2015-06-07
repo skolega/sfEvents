@@ -1,0 +1,53 @@
+{% for team in teams %}
+    <table class="table table-hover">
+        <thead>
+        <th>Drużyna {{ team.name }} <img src="{{ team.imageName }}" alt="" class="pull-right"/>
+            </thead>
+        <tbody>
+            <tr>
+                {% set setUser = false %}
+                {% for user in team.players %}
+                    {% if user == app.user %}
+                        {% set setUser = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if (team.players | length > 0) %}
+                    {% for user in team.players %}
+                        <td {% if app.user == user %} class="green" {% endif %}>
+                            <a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                {{ user.username }}
+                                <p class="badge small">
+                                    {{ user.points }}</p></a>
+                            <div class="pull-right">
+                                {% if app.user != user %}
+                                    <a href="#"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+                                    <a href="#"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
+                                    {% endif %}
+                            </div>
+                        </td>                
+                    {% endfor %}
+                {% else %}
+                    <td>
+                        <p class="small">
+
+                            Brak Graczy w tej drużynie
+
+                        </p>
+                    </td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>
+                    {% if (inTeams == false) and (inPlayers == true)  %}
+                        <a href="{{ path('add_user_to_team',{'team': team.id, 'event': events.id }) }}" class="btn btn-info">Wybierz drużynę</a></th>
+                    {% elseif (inTeams == true) and (setUser == true) %}
+                        <a href="{{ path('remove_user_from_team',{'team': team.id, 'event': events.id }) }}" class="btn btn-warning">Opuść drużynę</a></th>
+                    {% elseif (setUser == false) %}
+                        <br>
+                    {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+

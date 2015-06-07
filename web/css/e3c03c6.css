@@ -1,0 +1,206 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2015-04-27, 16:41:05
+    Author     : adam
+*/
+
+body {
+    /*    background-image: url("../images/background.jpg") !important;
+        background-repeat: no-repeat;
+        background-size: cover;*/
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.nano { background: #bba; width: 500px; height: 500px; }
+.nano .nano-content { padding: 10px; }
+.nano .nano-pane   { background: #888; }
+.nano .nano-slider { background: #111; }
+
+
+.navbar-top{
+    background-color: #8cc63f;
+    color: white;
+}
+
+.navbar-top a{
+    color: white;
+}
+
+.navbar-brand > img {
+    height: 38px;
+    margin-top: -9px;
+}
+
+.nav-space{
+    margin-top:53px;
+}
+
+.nav-space p{
+
+}
+
+.fixed{
+    position: fixed !important;
+}
+
+.smoked{
+    background-color: #f2f2f2 !important;
+}
+
+.sidebar-left, .row, body, html{
+    height: 100%;
+}
+
+.rounded{
+    border-radius:50%;
+}
+
+.avatar{
+    z-index: 1031;
+    right: 20px;
+    top: 10px;
+}
+
+.navbar-right{
+    margin-right: 80px !important;
+}
+
+.sidebar-left h1{
+    color: #666666;
+    padding: 0 1em;
+    font-size: 1.6em;
+}
+
+.sidebar-left label{
+    color: #666666;
+    font-weight: 300;
+}
+
+
+.sidebar-left .form-control{
+    width: 280px !important;
+}
+
+.sidebar-left .half{
+    width:126px !important;
+}
+
+.button-jumpin{
+    background-color: #FFC600;
+    border: none;
+    color: white;
+    padding: 10px;
+}
+
+.sidebar-left .button-jumpin{
+    margin-top: 21px;
+    width:100%;
+}
+
+.sidebar-left hr{
+    margin-left: 13px;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-color: #D4D4D4;
+}
+
+.green{
+    background-color: #8CC63F !important;
+    color: white;
+}
+
+.pagination{
+    float: right;
+}
+
+.event-thumbnail .button-jumpin{
+    position: absolute;
+    margin-top: -44px;
+    margin-left: -5px;
+    padding: 20px 69px;
+}
+
+.space-top{
+    margin-top: 30px;
+}
+
+.admin-list{
+    background-color: #8cc63f;
+    color: white;
+}
+
+.single-event-button{
+    position: relative !important;
+}
+
+.user-points{
+    position: absolute;
+    margin-left: -60px;
+    margin-top: -9px;
+    background-color: cornflowerblue;
+}
+
+.content-right{
+    margin-bottom: 21px;
+}
+
+.content-right .btn{
+    width: 100%;
+}
+
+.no-margin{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.admin-list a{
+    text-decoration: none;
+    color: white;
+}
+
+.admin-list a:hover{
+    color: white;
+}
+
+.event-thumbnail a:hover{
+    color: #666666;
+    text-decoration: none;
+}
+
+.event-thumbnail:hover div{
+    background-color: whitesmoke !important;
+}
+
+.green a {
+    color:white;
+}
+
+.small-thumbnail{
+    width: 50px;
+    height: auto;
+}
+
+.width-220{
+    width: 220px;
+}
+
+.info-badge{
+    background-color: #F00;
+    color: #FFF;
+    border-radius: 5px;
+    padding: 0px 5px;
+    font-weight: bolder;
+    font-family: Open Sans;
+    position: absolute;
+    margin-left: -6px;
+    margin-top: 9px;
+}
+
+.notification-menu{
+    max-height: 250px;
+    overflow-y: scroll;
+}

@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' _self %}
+{% block form_label_class -%}col-sm-4{%- endblock form_label_class %}
+{% block form_group_class -%}col-sm-8{%- endblock form_group_class %}
+
+{% block sidebar %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <h2>Rejestracja</h2>
+            
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            
+            <form action="{{ path('fos_user_registration_register') }}" method="post" {{ form_enctype(form) }} class="form-horizontal">
+                
+                {{ form_row(form.email) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.plainPassword) }}
+                <div class="col-sm-offset-4">
+                    <input type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" />
+                </div>
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+            
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <h4>Social</h4>
+            {% for owner in hwi_oauth_resource_owners() %}
+                <a href="{{ hwi_oauth_login_url(owner) }}">
+                    <img src="{{ asset('images/' ~ owner ~ '.png') }}" alt="{{ owner }}" width="250">
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+
