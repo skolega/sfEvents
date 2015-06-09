@@ -72,10 +72,15 @@ class Event
     private $image;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Game", mappedBy="events")
+     */
+    private $games;
+
+    /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="events")
      */
     private $players;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Notification", inversedBy="event")
      */
@@ -575,7 +580,6 @@ class Event
         $this->teams->removeElement($teams);
     }
 
-
     /**
      * Set type
      *
@@ -653,5 +657,39 @@ class Event
     public function removeAdmin(\AppBundle\Entity\User $admin)
     {
         $this->admin->removeElement($admin);
+    }
+
+
+    /**
+     * Add games
+     *
+     * @param \AppBundle\Entity\Game $games
+     * @return Event
+     */
+    public function addGame(\AppBundle\Entity\Game $games)
+    {
+        $this->games[] = $games;
+
+        return $this;
+    }
+
+    /**
+     * Remove games
+     *
+     * @param \AppBundle\Entity\Game $games
+     */
+    public function removeGame(\AppBundle\Entity\Game $games)
+    {
+        $this->games->removeElement($games);
+    }
+
+    /**
+     * Get games
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGames()
+    {
+        return $this->games;
     }
 }

@@ -8,8 +8,10 @@
                     <img src="{{ entity.icon }}"/>
                     <h4>{{ entity.name }}</h4>
                 </a>
-                {% if app.user.hasRole("ROLE_ADMIN") %}
-                    <a class="btn btn-warning" href="{{ path('category_edit', { 'id': entity.id }) }}">Edytuj</a>
+                {% if app.user %}
+                    {% if app.user.hasRole("ROLE_ADMIN") %}
+                        <a class="btn btn-warning" href="{{ path('category_edit', { 'id': entity.id }) }}">Edytuj</a>
+                    {% endif %}
                 {% endif %}
             </div>
             {% if loop.index % 6 == 0 %}
@@ -20,10 +22,11 @@
             </div>
         {% endif %}
     {% endfor %}
-
-    {% if app.user.hasRole("ROLE_ADMIN") %}
-        <a href="{{ path('category_new') }}" class="btn btn-primary">
-            Dodaj nową kategorię
-        </a>
+    {% if app.user %}
+        {% if app.user.hasRole("ROLE_ADMIN") %}
+            <a href="{{ path('category_new') }}" class="btn btn-primary">
+                Dodaj nową kategorię
+            </a>
+        {% endif %}
     {% endif %}
 {% endblock %}

@@ -31,6 +31,12 @@ class Team
      */
     private $name;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Score", mappedBy="team")
+     */
+    private $scores;
+    
+
     public function __toString()
     {
         return $this->name;
@@ -41,7 +47,7 @@ class Team
      * @ORM\ManyToMany(targetEntity="User", mappedBy="team")
      */
     private $players;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Notification", inversedBy="team")
      */
@@ -173,7 +179,7 @@ class Team
     {
         return $this->event;
     }
-    
+
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
@@ -209,7 +215,6 @@ class Team
         return $this->imageName;
     }
 
-
     /**
      * Add notifications
      *
@@ -241,5 +246,39 @@ class Team
     public function getNotifications()
     {
         return $this->notifications;
+    }
+
+
+    /**
+     * Add scores
+     *
+     * @param \AppBundle\Entity\Score $scores
+     * @return Team
+     */
+    public function addScore(\AppBundle\Entity\Score $scores)
+    {
+        $this->scores[] = $scores;
+
+        return $this;
+    }
+
+    /**
+     * Remove scores
+     *
+     * @param \AppBundle\Entity\Score $scores
+     */
+    public function removeScore(\AppBundle\Entity\Score $scores)
+    {
+        $this->scores->removeElement($scores);
+    }
+
+    /**
+     * Get scores
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getScores()
+    {
+        return $this->scores;
     }
 }
