@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class GameRepository extends EntityRepository
 {
+    public function getGameByEvent($event){
+        
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $games = $qb->select('g')
+                ->from('AppBundle:Game','g')
+                ->leftJoin('g.events', 'e')
+                ->leftJoin('g.scores', 's')
+                ->where('e = :event')
+                ->setParameter('event', $event);
+        
+        return $games->getQuery()->getResult();
+    }
 }
