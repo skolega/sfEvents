@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Category;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Event;
@@ -87,6 +88,7 @@ class EventController extends Controller
     public function participateAction(Event $event)
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
 
         $eventmenager = $em->getRepository('AppBundle:Event')
                 ->find($event);
@@ -97,13 +99,17 @@ class EventController extends Controller
             );
         }
 
-        $eventmenager->addPlayer($this->getUser());
-        $em->flush();
+        if ($user) {
+            $eventmenager->addPlayer($user);
+            $em->flush();
 
-        $notify = $this->get('notification');
-        $notify->addEventNotification($this->getUser(), $event, 4);
+            $notify = $this->get('notification');
+            $notify->addEventNotification($user, $event, 4);
 
-        $this->addFlash('success', sprintf('Użytkownik "%s" został dodany do gry', $this->getUser()->getUsername()));
+            $this->addFlash('success', sprintf('Użytkownik "%s" został dodany do gry', $user->getUsername()));
+            return $this->redirectToRoute('show_event', ['id' => $event->getId()]);
+        }
+        $this->addFlash('danger', 'Musisz być zalogowany aby wpisać się do gry');
         return $this->redirectToRoute('show_event', ['id' => $event->getId()]);
     }
 
@@ -215,7 +221,7 @@ class EventController extends Controller
 
             return $this->redirectToRoute('show_event', ['id' => $event->getId()]);
         }
-        
+
         return $this->render('Event/showEvent.html.twig', [
                     'event' => $findEvent,
                     'messages' => $messages,

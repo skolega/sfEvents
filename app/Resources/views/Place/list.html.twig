@@ -28,10 +28,11 @@
                 </div>
                 <button type="submit" class="button-jumpin">Szukaj</button>
             </form>
+            <a href="{{ path('place_new') }}" class="btn btn-primary">Dodaj obiekt</a>
         </div>
         <div class="col-sm-3 no-margin"></div>
         <div class="col-sm-9 no-margin">
-            {% if (places | length) > 1 %}
+            {% if (places | length) > 0 %}
                 {% for place in places %}
                     {% if loop.first or (loop.index % 4) == 0 %}
                         <div class="row no-margin">

@@ -200,3 +200,16 @@ body {
     max-height: 340px;
     overflow-y: auto;
 }
+
+.col-my{
+    width:13%;
+    display: inline-block;
+}
+
+div.col-my:nth-child(2){
+    margin-left: 3%;
+}
+
+div.col-my:nth-child(8){
+    margin-right: 3%;
+}

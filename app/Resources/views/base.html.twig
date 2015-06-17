@@ -106,7 +106,18 @@
                     {% endif %}
                 </div>
             {% endif %}
-
+            <div class="nav-space">
+                {% for key, messages in app.session.getFlashBag() %}
+                    {% if key in ['success', 'warning', 'danger', 'info'] %}
+                        {% for msg in messages %}
+                            <div class="alert alert-{{ key }} alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endblock %}
         <div class="row nav-space no-margin ">
             {% if (app.request.get('_route') == 'homepage') or (app.request.get('_route') == 'events_category_list') %}
@@ -139,16 +150,6 @@
                 </div>
                 <div class="col-lg-3"></div>
                 <div class="col-lg-9 no-margin">
-                    {% for key, messages in app.session.getFlashBag() %}
-                        {% if key in ['success', 'warning', 'danger', 'info'] %}
-                            {% for msg in messages %}
-                                <div class="alert alert-{{ key }} alert-dismissible" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    {{ msg }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
                 {% endif %}
                 {% block body %}
                 {% endblock %}

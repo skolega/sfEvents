@@ -11,12 +11,12 @@
     </thead>
     <tbody>
         {% for entity in entities %}
-        <tr><a href="{{ path('game_show', { 'id': entity.id }) }}">
-                <td>{% if entity.date %}{{ entity.date|date('Y/m/d h:m') }}{% endif %}</td></a>
-                {% for score in entity.scores %}
-                    <td>{{ score.score }}</td>
-                {% endfor %}
-            </tr>
+            <tr><a href="{{ path('game_show', { 'id': entity.id }) }}">
+            <td>{% if entity.date %}{{ entity.date|date('Y/m/d h:m') }}{% endif %}</td></a>
+            {% for score in entity.scores %}
+            <td>{{ score.score }}</td>
         {% endfor %}
+    </tr>
+{% endfor %}
 </tbody>
 </table>
