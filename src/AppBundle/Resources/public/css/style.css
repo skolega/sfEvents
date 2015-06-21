@@ -15,6 +15,19 @@ body {
     font-family: 'Open Sans', sans-serif !important;
 }
 
+.main-search{
+    background-image: url("../images/background.jpg");
+    padding: 180px 0 130px 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    margin-bottom: 2em;
+}
+
+.margin-auto{
+    width:100%;
+}
+
 .navbar-top{
     background-color: #8cc63f;
     color: white;
@@ -212,4 +225,61 @@ div.col-my:nth-child(2){
 
 div.col-my:nth-child(8){
     margin-right: 3%;
+}
+
+.category-thumbnail-header{
+    width:100%;
+    text-align: center;
+    color:white;
+    padding:10px;
+}
+
+.lightskyblue{
+    background-color: lightskyblue;
+}
+.aquamarine{
+background-color: rebeccapurple ;
+}
+.tomato{
+background-color: tomato ;
+}
+.coral{
+background-color: coral;
+}
+.darkcyan{
+background-color: darkcyan;
+}
+.darkorange{
+background-color: darkorange;
+}    
+.deeppink{
+background-color: deeppink
+}
+.turquoise {
+background-color: Peru  
+}
+.greenyellow{
+background-color: SeaGreen 
+}
+.slategray{
+background-color: slategray
+}
+.lightslategray{
+background-color: lightslategray
+}
+.salmon{
+background-color: salmon
+}
+
+.category-name{
+    color:white;
+    padding: 10px 0;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#myCarousel .item{
+    padding-top:50px;
+    margin-bottom: 50px;
 }

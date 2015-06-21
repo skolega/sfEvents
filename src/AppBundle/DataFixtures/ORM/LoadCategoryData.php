@@ -12,24 +12,25 @@ class loadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $categoriesNames = [
-            "Piłka Nożna",
-            "Siatkówka",
-            "Rolki",
-            "Bieganie",
-            "Rower",
-            "Ognisko",
-            "Piłka Ręczna",
-            "Koszykówka",
-            "Siłownia",
-            "Basen",
-            "Tenis",
-            "Inne"
+            "lightskyblue" =>"Piłka Nożna",
+            "aquamarine" =>"Siatkówka",
+            "tomato" =>"Rolki",
+            "coral" =>"Bieganie",
+            "darkcyan" =>"Rower",
+            "darkorange" =>"Ognisko",
+            "deeppink" =>"Piłka Ręczna",
+            "turquoise" =>"Koszykówka",
+            "greenyellow" =>"Siłownia",
+            "slategray" =>"Basen",
+            "lightslategray" =>"Tenis",
+            "salmon" =>"Inne"
         ];
         
         $i = 1;
-        foreach ($categoriesNames as $name) {
+        foreach ($categoriesNames as $key => $name) {
             $category = new Category();
             $category->setName($name);
+            $category->setColor($key);
             $category->setIcon('http://lorempixel.com/200/200/sports/'.$i);
             $this->addReference('category'. $i++, $category);
             $manager->persist($category);

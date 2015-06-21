@@ -143,3 +143,16 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
+            
+payum:
+    security:
+        token_storage:
+            AppBundle\Entity\PaymentToken: { doctrine: orm }
+
+    storages:
+        AppBundle\Entity\Payment: { doctrine: orm }
+        AppBundle\Entity\PaymentDetails: { doctrine: orm }
+
+    gateways:
+        offline:
+            offline: ~

@@ -6,7 +6,7 @@
             <div class="col-md-2">
                 <a href="{{ path('events_category_list', {'category':entity.id}) }}">
                     <img src="{{ entity.icon }}"/>
-                    <h4>{{ entity.name }}</h4>
+                    <h4 class="category-name {{ entity.color }}">{{ entity.name }}</h4>
                 </a>
                 {% if app.user %}
                     {% if app.user.hasRole("ROLE_ADMIN") %}

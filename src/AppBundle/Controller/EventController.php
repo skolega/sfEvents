@@ -158,14 +158,109 @@ class EventController extends Controller
      */
     public function showAction(Request $request, Category $category)
     {
-        $events = $this->getDoctrine()
-                        ->getManager()
-                        ->createQueryBuilder()
+        $em = $this->getDoctrine()
+                ->getManager();
+
+        $events = $em->createQueryBuilder()
                         ->select('e', 'p')
                         ->from('AppBundle:Event', 'e')
                         ->innerJoin('e.players', 'p')
+                        ->leftJoin('e.category', 'c')
                         ->where('e.category = :category')
+                        ->andWhere('e.enabled = :true')
                         ->setParameter('category', $category)
+                        ->setParameter('true', true)
+                        ->orderBy('e.startDate', 'DESC')
+                        ->getQuery()->getResult();
+
+        $eventspromoted = $em->createQueryBuilder()
+                        ->select('e', 'p')
+                        ->from('AppBundle:Event', 'e')
+                        ->innerJoin('e.players', 'p')
+                        ->leftJoin('e.category', 'c')
+                        ->where('e.category = :category')
+                        ->andWhere('e.enabled = :true')
+                        ->andWhere('e.featured = :true')
+                        ->setParameter('category', $category)
+                        ->setParameter('true', true)
+                        ->setMaxResults(4)
+                        ->getQuery()->getResult();
+
+        $cities = $em->createQueryBuilder()
+                        ->select('DISTINCT e.city')
+                        ->from('AppBundle:Event', 'e')
+                        ->orderBy('e.city', 'ASC')
+                        ->getQuery()->getResult();
+
+        $categories = $em->getRepository('AppBundle:Category')->findAll();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $events, $request->query->get('page', 1), 8
+        );
+
+        return $this->render('Event/show.html.twig', [
+                    'events' => $pagination,
+                    'cities' => $cities,
+                    'categories' => $categories,
+                    'eventspromoted' => $eventspromoted,
+        ]);
+    }
+
+    /**
+     * @Route("/search/events", name="search_event")
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $city = $request->query->get('city');
+        $date = $request->query->get('date');
+        $category = $request->query->get('category');
+
+        $events = $em->createQueryBuilder()
+                ->select('e')
+                ->from('AppBundle:Event', 'e')
+                ->leftJoin('e.category', 'c');
+        if ($city != '') {
+            $events->andWhere('e.city LIKE :city')
+                    ->setParameter('city', '%' . $city . '%');
+        }
+        if ($date != '') {
+            $startDate = new \DateTime($date);
+            $startDate->setTime(0, 0, 0);
+            $endDate = new \DateTime($date);
+            $endDate->setTime(23, 59, 59);
+            $events->andWhere('e.startDate > :start')
+                    ->andWhere('e.startDate < :end')
+                    ->setParameter('start', $startDate)
+                    ->setParameter('end', $endDate);
+        }
+        if ($category != '') {
+            $events->andWhere('c.name = :category')
+                    ->setParameter('category', $category);
+        }
+        $events->andWhere('e.enabled = :true')
+                ->setParameter('true', true)
+                ->orderBy('e.startDate', 'ASC')
+                ->getQuery()->getResult();
+
+        $cities = $em->createQueryBuilder()
+                        ->select('DISTINCT e.city')
+                        ->from('AppBundle:Event', 'e')
+                        ->orderBy('e.city', 'ASC')
+                        ->getQuery()->getResult();
+
+        $categories = $em->getRepository('AppBundle:Category')->findAll();
+
+        $eventspromoted = $em->createQueryBuilder()
+                        ->select('e', 'p')
+                        ->from('AppBundle:Event', 'e')
+                        ->innerJoin('e.players', 'p')
+                        ->leftJoin('e.category', 'c')
+                        ->andWhere('e.enabled = :true')
+                        ->andWhere('e.featured = :true')
+                        ->setParameter('true', true)
                         ->orderBy('e.startDate', 'DESC')
                         ->getQuery()->getResult();
 
@@ -176,6 +271,9 @@ class EventController extends Controller
 
         return $this->render('Event/show.html.twig', [
                     'events' => $pagination,
+                    'cities' => $cities,
+                    'categories' => $categories,
+                    'eventspromoted' => $eventspromoted,
         ]);
     }
 
@@ -235,16 +333,24 @@ class EventController extends Controller
     public function showUserEventsAction(User $user, Request $request)
     {
 
-        $events = $this->getDoctrine()
-                ->getManager()
-                ->createQueryBuilder()
+        $em = $this->getDoctrine()
+                ->getManager();
+
+        $events = $em->createQueryBuilder()
                 ->select('e', 'p')
                 ->from('AppBundle:Event', 'e')
                 ->leftJoin('e.players', 'p')
+                ->leftJoin('e.category', 'c')
                 ->where('p.id = :id')
                 ->setParameter('id', $user->getId())
                 ->getQuery()
                 ->getResult();
+
+        $cities = $em->createQueryBuilder()
+                        ->select('DISTINCT e.city')
+                        ->from('AppBundle:Event', 'e')
+                        ->orderBy('e.city', 'ASC')
+                        ->getQuery()->getResult();
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -253,6 +359,7 @@ class EventController extends Controller
 
         return $this->render('Event/show.html.twig', [
                     'events' => $pagination,
+                    'cities' => $cities,
         ]);
     }
 

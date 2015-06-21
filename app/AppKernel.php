@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
+            new Payum\Bundle\PayumBundle\PayumBundle(),
             new AppBundle\AppBundle(),
         );
 

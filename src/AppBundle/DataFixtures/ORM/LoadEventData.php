@@ -19,6 +19,12 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
     {
         $faker = \Faker\Factory::create('pl_PL');
 
+        if ($faker->numberBetween(1, 2) == 1) {
+            $featured = true;
+        } else {
+            $featured = false;
+        }
+
         for ($j = 0; $j < 200; $j++) {
             $administrator = $this->getReference('user_' . $faker->numberBetween(20, 101));
             $event = new Event();
@@ -31,16 +37,16 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
             $event->setEnabled(true);
             $event->setImage('http://lorempixel.com/200/130/sports/' . $randNumber);
             $event->setCity($faker->city);
-            $event->setFeatured(false);
-            $event->setType($faker->numberBetween(1,3));
-            $event->addTeam($this->getReference('team'. $faker->numberBetween(1, 19)));
-            $event->addTeam($this->getReference('team'. $faker->numberBetween(20, 40)));
+            $event->setFeatured($featured);
+            $event->setType($faker->numberBetween(1, 3));
+            $event->addTeam($this->getReference('team' . $faker->numberBetween(1, 19)));
+            $event->addTeam($this->getReference('team' . $faker->numberBetween(20, 40)));
             $event->addPlayer($administrator);
             $event->setDescription($faker->sentence(15));
             $event->setCategory($this->getReference('category' . $randNumber));
             $event->setAdmin($administrator);
             $event->setCapacity($faker->numberBetween(5, 20));
-            for($i=1;$i<$faker->numberBetween(1, 19);$i++){
+            for ($i = 1; $i < $faker->numberBetween(1, 19); $i++) {
                 $event->addPlayer($this->getReference('user_' . $i));
             }
             $this->setReference('event' . $j, $event);

@@ -2,34 +2,136 @@
 
 {% block title %}AppBundle:Event:show{% endblock %}
 
-{% block body %}
-    <div class="row">
-        {% for event in events %}
-            {% if loop.first or (loop.index % 4) == 0  %}
-                <div class="row">
-                {% endif %} 
-                <a href="{{ path('show_event', { 'id' : event.id }) }}">
-                    <div class="col-sm-6 col-md-3 event-thumbnail">
-                        <div class="thumbnail clearfix">
-                            <img src="{{ event.image }}" alt="">
-                            <div class="caption">
-                                <h5>{{ event.name }}</h5>
-
-                            <p>Utworzył: {{ event.admin }}</p>
-                            <p>{{ event.startDate | date('d-m-Y | h:m')}}</p>
-                            <p>Miasto: {{ event.city }}</p>
-                            <p>{{ event.loacation }}</p>
-
-                        </div>
-                    </div>
+{% block sidebar %}
+    <h1>Znajdź wydarzenie </h1>
+    <hr>
+    <form class="navbar-form navbar-left" role="search" action="{{ path('search_event') }}">
+        <div class="form-group">
+            <label>Miasto</label></br>
+            <input type="text" class="form-control" name="city" id="tags"></br>
+            <label>Kategoria</label></br>
+            <select class="form-control" name="category" id="category"></br>
+                <option value="">Wszystkie</option>
+                {% for category in categories %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <label>Data</label></br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" name="date" id="datepicker"></br>
                 </div>
-            </a>
-            {% if loop.last or (loop.index % 4) == 0  %}
             </div>
-        {% endif %} 
-        {% endfor %}
         </div>
-        <div class="row">
-            {{ knp_pagination_render(events) }}
-        </div>
-        {% endblock %}
+        <button type="submit" class="button-jumpin">Szukaj</button>
+    </form>
+{% endblock %}
+
+{% block body %}
+    {% if events | length > 0 %}
+        <div class="row no-margin">
+            <h4>Wyróżnione wydarzenia</h4>
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                </ol>
+
+                {% if events | length > 0 %}
+                    {% for event in eventspromoted %}
+                        {% if loop.index == 1 %}
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active {{ event.category.color }}">
+                                    <a href="{{ path('show_event', { 'id' : event.id }) }}">
+                                        <img src="{{ event.image }}" alt="">
+                                        <div class="carousel-caption">
+                                            <h3>{{ event.name }}</h3>
+                                            <p>{{ event.description }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endif %}
+                            <div class="item {{ event.category.color }}">
+                                <a href="{{ path('show_event', { 'id' : event.id }) }}">
+                                    <img src="{{ event.image }}" alt="">
+                                    <div class="carousel-caption">
+                                        <h3>{{ event.name }}</h3>
+                                        <p>{{ event.description }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Poprzedni</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Następny</span>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row no-margin">
+            {% if events | length > 0 %}
+                {% for event in events %}
+                    {% if loop.first or (loop.index % 4) == 0  %}
+                        <div class="row">
+                        {% endif %} 
+                        <a href="{{ path('show_event', { 'id' : event.id }) }}">
+                            <div class="col-sm-6 col-md-3 event-thumbnail">
+                                <div class="thumbnail clearfix">
+                                    <p class="category-thumbnail-header {{ event.category.color }}">{{ event.category }}</p>
+                                    <img src="{{ event.image }}" alt="">
+                                    <div class="caption">
+                                        <h4 class="text-danger">{{ event.name }}</h4>
+                                        <hr>
+                                        <p><span class="glyphicon glyphicon-calendar pull-left" aria-hidden="true"></span> {{ event.startDate | date('d/m/Y') }}   | 
+                                            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>  {{ event.startDate | date('h:m') }}</p>
+                                        <p class="small">Adres:<br>{{ event.city }}, {{ event.loacation }}</p>
+                                            {% set freePlaces = event.capacity - event.players | length %}
+                                        <hr>
+                                        <p class="text-center">Wolne miejsca: 
+                                            {% if freePlaces > 3 %}
+                                                <span class="text-success">
+                                                {% else %}
+                                                    <span class="text-danger">
+                                                    {% endif %} 
+                                                    {{ freePlaces }}
+                                                </span>
+                                                z {{ event.capacity }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% if loop.last or (loop.index % 4) == 0  %}
+                        </div>
+                    {% endif %} 
+                {% endfor %}
+            </div>
+            <div class="row">
+                {{ knp_pagination_render(events) }}
+            </div>
+        {% else %}
+            <h4>Brak Obiektów spełniających wybrane kryteria</h4>
+            <h5> Możesz nowe wydarzenie 
+                {% if app.user %}
+                </h5>
+                <a href ="{{ path('place_new') }}" class="btn btn-primary"><h4>Dodaj wydarzenie</h4></a>
+            {% else %}
+                po zalogowaniu </h5>
+            <a href ="{{ path('fos_user_security_login') }}" class="btn btn-primary"><h4>Zaloguj się</h4></a>
+        {% endif %}
+    {% endif %}
+    <script>
+        var availableTags = [{% for city in cities %}
+            "{{ city.city }}",{% endfor %}
+        ];
+    </script>
+{% endblock %}

@@ -41,7 +41,13 @@ class Category
      * @ORM\Column(name="icon", type="string", length=255, nullable=true)
      */
     private $icon;
-
+    
+    /**
+     * 
+     * @ORM\Column(name="color", type="string", length=255, nullable=true)
+     */
+    private $color;
+    
     public function __toString()
     {
         return $this->name;
@@ -178,5 +184,28 @@ class Category
     public function getIcon()
     {
         return $this->icon;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     * @return Category
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

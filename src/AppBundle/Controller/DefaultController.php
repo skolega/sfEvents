@@ -20,7 +20,15 @@ class DefaultController extends Controller
         $events = $qb->select('e', 'u')
                         ->from('AppBundle:Event', 'e')
                         ->innerJoin('e.players', 'u')
+                        ->where('e.featured = :true')
+                        ->andWhere('e.enabled =:true')
+                        ->setParameter('true', true)
                         ->orderBy('e.startDate', 'DESC')
+                        ->getQuery()->getResult();
+
+        $cities = $qb->select('DISTINCT a.city')
+                        ->from('AppBundle:Event', 'a')
+                        ->orderBy('a.city', 'ASC')
                         ->getQuery()->getResult();
 
         $categories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
@@ -28,6 +36,7 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig', [
                     'events' => $events,
                     'categories' => $categories,
+                    'cities' => $cities,
         ]);
     }
 
@@ -43,18 +52,18 @@ class DefaultController extends Controller
         $notifications = $this->getDoctrine()
                 ->getRepository('AppBundle:Notification')
                 ->getNotifications($myFriends, $myEvents, $user);
-        
+
         return $this->render('default/notificationBadge.html.twig', [
                     'notifications' => $notifications,
         ]);
     }
-    
+
     /**
      * @Route("/messagebadge", name="message_badge")
      */
     public function messageBadgeAction()
     {
-     $user = $this->getUser();
+        $user = $this->getUser();
 
         $messages = $this->getDoctrine()
                 ->getRepository('AppBundle:PrivateMessage')
@@ -64,4 +73,5 @@ class DefaultController extends Controller
                     'messages' => $messages,
         ]);
     }
+
 }

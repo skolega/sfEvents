@@ -1,24 +1,25 @@
 <a href="{{ path('show_event', { 'id' : event.id }) }}">
     <div class="col-sm-6 col-md-3 event-thumbnail">
         <div class="thumbnail clearfix">
+            <p class="category-thumbnail-header {{ event.category.color }}">{{ event.category }}</p>
             <img src="{{ event.image }}" alt="">
             <div class="caption">
-                <h5>{{ event.name }}</h5>
-                <p>Utworzył: {{ event.admin }}</p>
-                <p>{{ event.startDate | date('d-m-Y | h:m')}}</p>
-                <p>Miasto: {{ event.city }}</p>
-                <p>{{ event.loacation }}</p>
+                <h4 class="text-danger">{{ event.name }}</h4>
+                <hr>
+                <p><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ event.startDate | date('d/m/Y') }}  
+                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ event.startDate | date('h:m') }}</p>
+                <p class="small">Adres:<br>{{ event.city }}, {{ event.loacation }}</p>
                 {% set freePlaces = event.capacity - event.players | length %}
-                <p>Wolne miejsca: 
+                <hr>
+                <p class="text-center">Wolne miejsca: 
                     {% if freePlaces > 3 %}
                         <span class="text-success">
                         {% else %}
-                            <span class="text-danger">
+                            <span class="text-danger tex">
                             {% endif %} 
                             {{ freePlaces }}
                         </span>
                         z {{ event.capacity }}</p>
-
             </div>
             <a href="" class="button-jumpin pull-right green hide mouseover">Weź udział</a>
         </div>

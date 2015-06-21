@@ -11,12 +11,27 @@
 //});
 
 var hideNotificationsPath = $('.notifications').attr('data-path');
-$(".notifications").click(function (){
+$(".notifications").click(function () {
     $('html').load(hideNotificationsPath);
     $('.glyphicon-globe .info-badge').css('display', 'none');
 });
 var hideMessagesPath = $('.messages').attr('data-path');
-$(".messages").click(function (){
+$(".messages").click(function () {
     $('html').load(hideMessagesPath);
     $('.badge-message .info-badge').css('display', 'none');
 });
+
+$(function () {
+    $("#datepicker").datepicker();
+});
+
+$(function () {
+
+    $("#tags").autocomplete({
+        source: availableTags
+    }); 
+});
+
+$("#tags").click(function(){
+        $(this).attr('autocomplete','on');
+    });
