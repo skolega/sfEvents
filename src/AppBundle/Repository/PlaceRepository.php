@@ -60,11 +60,23 @@ class PlaceRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $category = $qb->select('DISTINCT p.city')
+        $qb->select('DISTINCT p.city')
                 ->from('AppBundle:Place', 'p');
 
         return $qb->getQuery()->getResult();
     }
-   
+    
+    public function getSinglePlace($id)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('p')
+                ->from('AppBundle:Place', 'p')
+                ->leftJoin('p.reservation', 'r')
+                ->where('p.id = :id')
+                ->setParameter('id', $id);
+
+        return $qb->getQuery()->getSingleResult();
+    }
 
 }

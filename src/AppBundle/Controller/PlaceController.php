@@ -113,18 +113,18 @@ class PlaceController extends Controller
     /**
      * Finds and displays a Place entity.
      *
-     * @Route("/{id}", name="place_show")
+     * @Route("/{id}/{date}", name="place_show", defaults={"date":0})
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($id, $date = 0)
     {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AppBundle:Place')->find($id);
-
+        
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Place entity.');
+            throw $this->createNotFoundException('Nie można odnaleźć elemntu.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -132,7 +132,32 @@ class PlaceController extends Controller
         return array(
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
+            'date' => $date,
         );
+    }
+    
+    /**
+     * @Route("/nextweek/{id}/{date}", name="next_week")
+     */
+    public function nextWeekAction($id, $date){
+        $newDate = $date + 7;
+        
+        return $this->redirectToRoute('place_show',[
+            'id' => $id,
+            'date' => $newDate,
+        ]);
+    }
+    
+        /**
+     * @Route("/prevweek/{id}/{date}", name="prev_week")
+     */
+    public function prevWeekAction($id, $date){
+        $newDate = $date - 7;
+        
+        return $this->redirectToRoute('place_show',[
+            'id' => $id,
+            'date' => $newDate,
+        ]);
     }
 
     /**

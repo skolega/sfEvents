@@ -155,6 +155,12 @@ class User extends BaseUser
      * @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true)
      */
     protected $facebookAccessToken;
+    
+    /**
+     * 
+     * @ORM\OneToMany(targetEntity="PlaceReservation", mappedBy="reservedBy")
+     */
+    private $reservations;
 
     public function __construct()
     {
@@ -892,5 +898,38 @@ class User extends BaseUser
     public function getPlaces()
     {
         return $this->places;
+    }
+
+    /**
+     * Add reservations
+     *
+     * @param \AppBundle\Entity\PlaceReservation $reservations
+     * @return User
+     */
+    public function addReservation(\AppBundle\Entity\PlaceReservation $reservations)
+    {
+        $this->reservations[] = $reservations;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservations
+     *
+     * @param \AppBundle\Entity\PlaceReservation $reservations
+     */
+    public function removeReservation(\AppBundle\Entity\PlaceReservation $reservations)
+    {
+        $this->reservations->removeElement($reservations);
+    }
+
+    /**
+     * Get reservations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getReservations()
+    {
+        return $this->reservations;
     }
 }

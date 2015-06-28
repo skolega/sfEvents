@@ -1,0 +1,23 @@
+{% block body %}
+    <div class="list-group">
+        {% for reservation, type in reservations %}
+            {% if type|first == 1 %}
+                <a href="{{ path('add_reservation', {'data':thisDate,'hour':reservation ,'id':id, 'offset':offset, 'placeAdmin': ifPlaceAdmin }) }}" class="list-group-item calendar_active">{{ reservation }}:00</a>
+            {% elseif type|first == 2 and type[2] == 2 %}
+                <p class="list-group-item calendar_reserved">{{ reservation }}:00</p>
+            {% elseif type|first == 2 and type[2] == 1 %}
+
+                {% if  type[3] %}
+                    <a href="
+                            {{ path('confirm_reservation', {'reservationId': type[4], 'offset':offset} ) }}
+                       " class="list-group-item calendar_confirm">Potwierdź</a>
+                {% else %}
+                    <p class="list-group-item calendar_waiting">{{ reservation }}:00 - Oczekuje</p>
+                {% endif %}
+
+            {% else %}
+                <p class="list-group-item calendar_disabled">{{ reservation }}:00</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

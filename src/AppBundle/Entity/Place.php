@@ -120,12 +120,18 @@ class Place
      */
     private $imageName;
     
+    /**
+     * 
+     * @ORM\OneToMany(targetEntity="PlaceReservation", mappedBy="place")
+     */
+    private $reservation;
+    
     public function __toString()
     {
         return $this->name;
     }
 
-   
+ 
     /**
      * Constructor
      */
@@ -462,5 +468,39 @@ class Place
     public function getCategory()
     {
         return $this->category;
+    }
+
+
+    /**
+     * Add reservation
+     *
+     * @param \AppBundle\Entity\PlaceReservation $reservation
+     * @return Place
+     */
+    public function addReservation(\AppBundle\Entity\PlaceReservation $reservation)
+    {
+        $this->reservation[] = $reservation;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservation
+     *
+     * @param \AppBundle\Entity\PlaceReservation $reservation
+     */
+    public function removeReservation(\AppBundle\Entity\PlaceReservation $reservation)
+    {
+        $this->reservation->removeElement($reservation);
+    }
+
+    /**
+     * Get reservation
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getReservation()
+    {
+        return $this->reservation;
     }
 }

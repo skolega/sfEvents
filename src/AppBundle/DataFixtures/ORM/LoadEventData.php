@@ -19,21 +19,22 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
     {
         $faker = \Faker\Factory::create('pl_PL');
 
-        if ($faker->numberBetween(1, 2) == 1) {
-            $featured = true;
-        } else {
-            $featured = false;
-        }
+
 
         for ($j = 0; $j < 200; $j++) {
+            if ($faker->numberBetween(1, 2) == 1) {
+                $featured = true;
+            } else {
+                $featured = false;
+            }
             $administrator = $this->getReference('user_' . $faker->numberBetween(20, 101));
             $event = new Event();
             $randNumber = $faker->numberBetween(1, 12);
             $event->setName($faker->sentence(2));
             $event->setLoacation($faker->streetAddress);
-            $event->setCreatedAt($faker->dateTimeThisYear($max = 'now'));
-            $event->setStartDate($faker->dateTimeThisYear($max = 'now'));
-            $event->setEndDate($faker->dateTimeThisYear($max = 'now'));
+            $event->setCreatedAt($faker->dateTimeThisYear('now'));
+            $event->setStartDate($faker->dateTimeThisYear('now'));
+            $event->setEndDate($faker->dateTimeThisYear('now'));
             $event->setEnabled(true);
             $event->setImage('http://lorempixel.com/200/130/sports/' . $randNumber);
             $event->setCity($faker->city);

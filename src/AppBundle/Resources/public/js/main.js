@@ -29,9 +29,13 @@ $(function () {
 
     $("#tags").autocomplete({
         source: availableTags
-    }); 
+    });
 });
 
-$("#tags").click(function(){
-        $(this).attr('autocomplete','on');
-    });
+$("#tags").click(function () {
+    $(this).attr('autocomplete', 'on');
+});
+
+$('.calendar_active').hover(function () {
+    $(this).html()
+});

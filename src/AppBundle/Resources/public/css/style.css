@@ -217,10 +217,7 @@ body {
 .col-my{
     width:13%;
     display: inline-block;
-}
-
-div.col-my:nth-child(2){
-    margin-left: 3%;
+    vertical-align: top;
 }
 
 div.col-my:nth-child(8){
@@ -238,37 +235,37 @@ div.col-my:nth-child(8){
     background-color: lightskyblue;
 }
 .aquamarine{
-background-color: rebeccapurple ;
+    background-color: rebeccapurple ;
 }
 .tomato{
-background-color: tomato ;
+    background-color: tomato ;
 }
 .coral{
-background-color: coral;
+    background-color: coral;
 }
 .darkcyan{
-background-color: darkcyan;
+    background-color: darkcyan;
 }
 .darkorange{
-background-color: darkorange;
+    background-color: darkorange;
 }    
 .deeppink{
-background-color: deeppink
+    background-color: deeppink
 }
 .turquoise {
-background-color: Peru  
+    background-color: Peru  
 }
 .greenyellow{
-background-color: SeaGreen 
+    background-color: SeaGreen 
 }
 .slategray{
-background-color: slategray
+    background-color: slategray
 }
 .lightslategray{
-background-color: lightslategray
+    background-color: lightslategray
 }
 .salmon{
-background-color: salmon
+    background-color: salmon
 }
 
 .category-name{
@@ -282,4 +279,31 @@ background-color: salmon
 #myCarousel .item{
     padding-top:50px;
     margin-bottom: 50px;
+}
+
+.calendar_reserved{
+    background-color: #96B9A7 !important;
+    color: #FFF;
+    text-decoration: line-through;
+}
+
+.calendar_active{
+    background-color: #FFC600 !important;
+    z-index: 2;
+/*    color: #FFF !important;*/
+    border-color: #337AB7;
+}
+
+.calendar_disabled{
+    color: lightgray !important;
+}
+
+.calendar_waiting{
+    background-color: #6264FE !important;
+    color: #FFF;
+}
+
+.calendar_confirm{
+    background-color: #8CC63F !important;
+    color: #FFF !important;
 }
