@@ -121,6 +121,11 @@ class Place
     private $imageName;
     
     /**
+     * @ORM\ManyToMany(targetEntity="Notification", inversedBy="place")
+     */
+    private $notifications;
+    
+    /**
      * 
      * @ORM\OneToMany(targetEntity="PlaceReservation", mappedBy="place")
      */
@@ -502,5 +507,38 @@ class Place
     public function getReservation()
     {
         return $this->reservation;
+    }
+
+    /**
+     * Add notifications
+     *
+     * @param \AppBundle\Entity\Notification $notifications
+     * @return Place
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \AppBundle\Entity\Notification $notifications
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 }
