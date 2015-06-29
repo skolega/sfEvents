@@ -100,10 +100,10 @@ class PlaceReservationController extends Controller
         $user = $this->getUser();
         foreach ($placeAdmins as $placeAdmin) {
             if ($user == $placeAdmin) {
-                $ifPlaceAdmin = true;
+                $ifPlaceAdmin = 1;
                 break;
             } else {
-                $ifPlaceAdmin = false;
+                $ifPlaceAdmin = 2;
             }
         }
 
@@ -122,7 +122,7 @@ class PlaceReservationController extends Controller
             $reservationId = $reservation->getId();
             $repeatable = $reservation->getRepeatable();
             $status = $reservation->getStatus();
-            dump($dataCloser);
+
             if ($dataCloser == '23:59') {
                 $dayCalendar[24] = [2, $repeatable, $status, $ifPlaceAdmin, $reservationId, $type];
             } else {
