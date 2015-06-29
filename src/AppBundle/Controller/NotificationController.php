@@ -17,7 +17,7 @@ class NotificationController extends Controller
     public function indexAction()
     {
         $user = $this->getUser();
-         $myEvents = $user->getEvents();
+        $myEvents = $user->getEvents();
         $myFriends = $user->getMyFriends();
 
         $notifications = $this->getDoctrine()

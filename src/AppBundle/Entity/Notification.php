@@ -38,6 +38,11 @@ class Notification
      * @ORM\ManyToMany(targetEntity="Event", mappedBy="notifications")
      */
     private $event;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Place", mappedBy="notifications")
+     */
+    private $place;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="friendsNotifications")
@@ -296,5 +301,38 @@ class Notification
     public function getHideToUser()
     {
         return $this->hide_to_user;
+    }
+
+    /**
+     * Add place
+     *
+     * @param \AppBundle\Entity\Place $place
+     * @return Notification
+     */
+    public function addPlace(\AppBundle\Entity\Place $place)
+    {
+        $this->place[] = $place;
+
+        return $this;
+    }
+
+    /**
+     * Remove place
+     *
+     * @param \AppBundle\Entity\Place $place
+     */
+    public function removePlace(\AppBundle\Entity\Place $place)
+    {
+        $this->place->removeElement($place);
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlace()
+    {
+        return $this->place;
     }
 }
