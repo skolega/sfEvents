@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block body %}
-    {% if events | length > 0 %}
+    {% if events | length > 0 and eventspromoted  %}
         <div class="row no-margin">
             <h4>Wyróżnione wydarzenia</h4>
             <div id="myCarousel" class="carousel slide" data-ride="carousel">

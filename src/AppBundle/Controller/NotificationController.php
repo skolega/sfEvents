@@ -92,6 +92,25 @@ class NotificationController extends Controller
                     'notifications' => $notifications,
         ]);
     }
+    
+    /**
+     * @Route("/list/place_notifications/{user}", name="place_notification_list")
+     */
+    public function placeListAction(User $user)
+    {
+        $myPlaces = $user->getPlaces();
+        $myFriends = $user->getMyFriends();
+
+        $notifications = $this->getDoctrine()
+                ->getRepository('AppBundle:Notification')
+                ->getAllNotifications($myFriends, $myPlaces, $user, true);
+
+
+
+        return $this->render('Notification/list.html.twig', [
+                    'notifications' => $notifications,
+        ]);
+    }
 
     private function getRefererParams()
     {

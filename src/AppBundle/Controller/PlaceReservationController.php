@@ -122,7 +122,7 @@ class PlaceReservationController extends Controller
             $reservationId = $reservation->getId();
             $repeatable = $reservation->getRepeatable();
             $status = $reservation->getStatus();
-            dump($dataCloser);
+            
             if ($dataCloser == '23:59') {
                 $dayCalendar[24] = [2, $repeatable, $status, $ifPlaceAdmin, $reservationId, $type];
             } else {

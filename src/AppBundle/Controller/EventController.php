@@ -360,6 +360,7 @@ class EventController extends Controller
         return $this->render('Event/show.html.twig', [
                     'events' => $pagination,
                     'cities' => $cities,
+                    'eventspromoted' => false,
         ]);
     }
 
