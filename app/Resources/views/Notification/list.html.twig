@@ -26,6 +26,11 @@
                                         <span class="text-muted small"> zrezygnował z </span> 
                                     {% elseif notify.type == 6 %}
                                         <span class="text-muted small"> zrezygnował z </span>
+                                    {% elseif notify.type == 7 %}
+                                        <span class="text-muted small"> chce zarezerwować </span>
+                                        {% for place in notify.place %}
+                                            {{ place.name }}
+                                        {% endfor %}
                                     {% endif %}
                                     {% if event %}
                                         {% for event in event.event %}

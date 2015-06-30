@@ -99,11 +99,10 @@ class NotificationController extends Controller
     public function placeListAction(User $user)
     {
         $myPlaces = $user->getPlaces();
-        $myFriends = $user->getMyFriends();
 
         $notifications = $this->getDoctrine()
                 ->getRepository('AppBundle:Notification')
-                ->getAllNotifications($myFriends, $myPlaces, $user, true);
+                ->getPlaceNotification($myPlaces);
 
 
 

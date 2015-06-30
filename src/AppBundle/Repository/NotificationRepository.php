@@ -109,5 +109,32 @@ class NotificationRepository extends EntityRepository
             return null;
         }
     }
+    
+    
+    public function getPlaceNotification($places)
+    {
+
+        $placesIds = array();
+        foreach ($places as $place) {
+            $placesIds[] = $place->getId();
+        }
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('n')
+                ->from('AppBundle:Notification', 'n')
+                ->leftJoin('n.place', 'p');
+        $qb->andWhere($qb->expr()->in('p.id', $placesIds));
+        $qb->orderBy('n.id', 'DESC');
+
+
+        $q = $qb->getQuery();
+
+        try {
+            return $q->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
 
 }

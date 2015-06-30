@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\PlaceReservation;
+use AppBundle\Entity\Notification;
 
 class PlaceReservationController extends Controller
 {
@@ -35,6 +36,14 @@ class PlaceReservationController extends Controller
         } else {
             $reservation->setType(2);
             $reservation->setStatus(1);
+            
+            $notification = new Notification;
+            $notification->addPlace($place);
+            $notification->addUser($user);
+            $notification->setType(7);
+            
+            $em->persist($notification);
+            $em->flush();
         }
 
         $em->persist($reservation);
