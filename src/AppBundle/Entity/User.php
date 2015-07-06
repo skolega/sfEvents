@@ -29,19 +29,21 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Event", mappedBy="players")
-     * 
+     * @JoinTable(name="event_players")
      *
      */
     private $events;
 
     /**
      * @ORM\ManyToMany(targetEntity="Place", mappedBy="admin")
+     * @JoinTable(name="place_admin")
      */
     private $places;
 
     /**
      *
      * @ORM\ManyToMany(targetEntity="Team", inversedBy="players")
+     * @JoinTable(name="team_players")
      */
     private $team;
 
@@ -52,9 +54,12 @@ class User extends BaseUser
     private $own_events;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="my_id")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="my_id")
+     * @JoinTable(name="user_hidden")
      */
     private $hidden_friends;
+    
+
 
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="hidden_friends")
@@ -69,6 +74,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Notification", inversedBy="user")
+     * @JoinTable(name="notificatoin_user")
      * 
      */
     private $notifications;
@@ -110,11 +116,13 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToMany(targetEntity="PrivateMessage", mappedBy="sendTo")
+     * 
      */
     private $recieved_private_messages;
 
     /**
      * @ORM\OneToMany(targetEntity="PrivateMessage", mappedBy="createdBy")
+     * @JoinTable(name="message_sended_to")
      */
     private $created_private_messages;
 
@@ -931,5 +939,51 @@ class User extends BaseUser
     public function getReservations()
     {
         return $this->reservations;
+    }
+
+    /**
+     * Set myteam
+     *
+     * @param \AppBundle\Entity\Team $myteam
+     * @return User
+     */
+    public function setMyteam(\AppBundle\Entity\Team $myteam = null)
+    {
+        $this->myteam = $myteam;
+
+        return $this;
+    }
+
+    /**
+     * Get myteam
+     *
+     * @return \AppBundle\Entity\Team 
+     */
+    public function getMyteam()
+    {
+        return $this->myteam;
+    }
+
+    /**
+     * Add myteam
+     *
+     * @param \AppBundle\Entity\Team $myteam
+     * @return User
+     */
+    public function addMyteam(\AppBundle\Entity\Team $myteam)
+    {
+        $this->myteam[] = $myteam;
+
+        return $this;
+    }
+
+    /**
+     * Remove myteam
+     *
+     * @param \AppBundle\Entity\Team $myteam
+     */
+    public function removeMyteam(\AppBundle\Entity\Team $myteam)
+    {
+        $this->myteam->removeElement($myteam);
     }
 }

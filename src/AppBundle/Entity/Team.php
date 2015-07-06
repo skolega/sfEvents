@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -47,6 +48,7 @@ class Team
      * @ORM\ManyToMany(targetEntity="User", mappedBy="team")
      */
     private $players;
+    
 
     /**
      * @ORM\ManyToMany(targetEntity="Notification", inversedBy="team")
@@ -280,5 +282,51 @@ class Team
     public function getScores()
     {
         return $this->scores;
+    }
+
+    /**
+     * Set team_captain
+     *
+     * @param \AppBundle\Entity\User $teamCaptain
+     * @return Team
+     */
+    public function setTeamCaptain(\AppBundle\Entity\User $teamCaptain = null)
+    {
+        $this->team_captain = $teamCaptain;
+
+        return $this;
+    }
+
+    /**
+     * Get team_captain
+     *
+     * @return \AppBundle\Entity\User 
+     */
+    public function getTeamCaptain()
+    {
+        return $this->team_captain;
+    }
+
+    /**
+     * Add team_captain
+     *
+     * @param \AppBundle\Entity\User $teamCaptain
+     * @return Team
+     */
+    public function addTeamCaptain(\AppBundle\Entity\User $teamCaptain)
+    {
+        $this->team_captain[] = $teamCaptain;
+
+        return $this;
+    }
+
+    /**
+     * Remove team_captain
+     *
+     * @param \AppBundle\Entity\User $teamCaptain
+     */
+    public function removeTeamCaptain(\AppBundle\Entity\User $teamCaptain)
+    {
+        $this->team_captain->removeElement($teamCaptain);
     }
 }

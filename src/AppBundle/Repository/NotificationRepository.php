@@ -109,14 +109,18 @@ class NotificationRepository extends EntityRepository
             return null;
         }
     }
-    
-    
-    public function getPlaceNotification($places)
+
+    public function getPlaceNotification($places, $user)
     {
 
         $placesIds = array();
         foreach ($places as $place) {
             $placesIds[] = $place->getId();
+        }
+        $hiddenNotifications = $user->getHiddenNotification();
+        $hiddenNotificationsIds = array();
+        foreach ($hiddenNotifications as $hiddenNotification) {
+            $hiddenNotificationsIds[] = $hiddenNotification->getId();
         }
 
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -124,7 +128,14 @@ class NotificationRepository extends EntityRepository
         $qb->select('n')
                 ->from('AppBundle:Notification', 'n')
                 ->leftJoin('n.place', 'p');
+        $qb->addSelect('hide_to');
+        $qb->addSelect('user');
+        $qb->leftJoin('n.user', 'user');
+        $qb->leftJoin('user.hidden_notification', 'hide_to');
         $qb->andWhere($qb->expr()->in('p.id', $placesIds));
+        if ($hiddenNotificationsIds) {
+            $qb->andWhere($qb->expr()->notIn('n.id', $hiddenNotificationsIds));
+        }
         $qb->orderBy('n.id', 'DESC');
 
 

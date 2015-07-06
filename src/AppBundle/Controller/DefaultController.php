@@ -57,6 +57,23 @@ class DefaultController extends Controller
                     'notifications' => $notifications,
         ]);
     }
+    
+    /**
+     * @Route("/placebadge", name="place_badge")
+     */
+    public function placeBadgeAction()
+    {
+        $user = $this->getUser();
+        $myPlaces = $user->getPlaces();
+
+        $notifications = $this->getDoctrine()
+                ->getRepository('AppBundle:Notification')
+                ->getPlaceNotification($myPlaces, $user);
+
+        return $this->render('default/notificationBadge.html.twig', [
+                    'notifications' => $notifications,
+        ]);
+    }
 
     /**
      * @Route("/messagebadge", name="message_badge")

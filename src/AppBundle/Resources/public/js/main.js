@@ -21,6 +21,12 @@ $(".messages").click(function () {
     $('.badge-message .info-badge').css('display', 'none');
 });
 
+var hidePlacesNotificationPath = $('.place-notifications').attr('data-path');
+$(".place-notifications").click(function () {
+    $('html').load(hidePlacesNotificationPath);
+    $('.glyphicon-map-marker .info-badge').css('display', 'none');
+});
+
 $(function () {
     $("#datepicker").datepicker();
 });

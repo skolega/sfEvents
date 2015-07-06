@@ -1,0 +1,60 @@
+<div class="content-right">
+    ZESPOŁY
+    {% if single.teams | length < 1  %}
+        <a href="{{ path('add_my_team', {'event':single.id}) }}" class="btn btn-info">Dodaj drużynę #1</a>
+        <a href="{{ path('add_my_team', {'event':single.id}) }}" class="btn btn-info">Dodaj drużynę #2</a>   
+    {% else %}
+        <table class="table table-hover">
+            <thead>
+            <div class="row">
+                {% for team in single.teams %}
+                    <th>
+                    <div class="col-md-1">
+                        <img src="{{ team.imageName }}" alt=""/>
+                    </div>
+                    <div class="col-md-4">{{ team.name }} </div>
+                    </th>
+                    {% if loop.index == 1 %}
+                        <div class="col-md-2">
+                            <th>vs</th>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% if single.teams | length == 1  %}
+                    <a href="{{ path('add_my_team', {'event':single.id}) }}" class="btn btn-info">Dodaj drużynę #2</a>
+                {% endif %}
+            </div>
+            </thead>
+        </table>
+    {% endif %}
+    <table class="table table-hover">
+        <tr>
+            <td><p>Administrator</p></td>
+        </tr>
+        <tr class="success">
+            <td>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                {{ single.admin }}
+                {% if app.user and app.user != single %}
+                    <div class="pull-right">
+                        <a href="{{ path('add_friend', {'id': single.admin }) }}">
+                            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                        </a>
+                        <a href="{{ path('new_private_message',{'id':single.admin}) }}">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+    </table>
+    {% if ( single.capacity > single.players | length ) %}
+        {% if (app.user == single.admin) %}
+            <a href="{{ path('list_friends') }}" class="btn btn-info">Zaproś Drużynę</a>
+        {% endif %}
+    {% endif %}
+</div>
+

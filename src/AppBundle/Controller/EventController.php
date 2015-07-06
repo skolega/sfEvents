@@ -28,14 +28,7 @@ class EventController extends Controller
 
         $event = new Event();
 
-        $team1 = new Team();
-        $team1->setName('Czerwoni');
-        $event->addTeam($team1);
-        $team2 = new Team();
-        $team2->setName('Niebiescy');
-        $event->addTeam($team2);
-
-        $form = $this->createForm(new EventType(), $event);
+        $form = $this->createForm(new EventType($user), $event);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -43,17 +36,15 @@ class EventController extends Controller
             $event->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
             $event->setEnabled(true);
             $event->addPlayer($user);
-            $team1->addEvent($event);
-            $team2->addEvent($event);
             $em->persist($event);
-            $em->persist($team1);
-            $em->persist($team2);
             $em->flush();
 
             $notify = $this->get('notification');
             $notify->addEventNotification($user, $event, 3);
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('show_event', [
+                'id' => $event->getId(),
+            ]);
         }
 
         return $this->render('Event/add.html.twig', array(

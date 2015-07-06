@@ -65,5 +65,19 @@ class Notifications
 
         return $this;
     }
+    
+    public function addPlaceNotification($user, $place, $type)
+    {
+
+        $notification = new Notification();
+
+        $notification->addUser($user);
+        $notification->addPlace($place);
+        $notification->setType($type);
+        $this->em->persist($notification);
+        $this->em->flush();
+
+        return $this;
+    }
 
 }

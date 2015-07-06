@@ -49,7 +49,7 @@ class UserRepository extends EntityRepository
         foreach ($friends as $w) {
             $friendsIds[] = $w->getId();
         }
-
+        
         $qb->select('e')
                 ->from('AppBundle:Event', 'e')
                 ->join('e.players', 'u')

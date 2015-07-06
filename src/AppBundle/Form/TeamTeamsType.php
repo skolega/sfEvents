@@ -5,8 +5,9 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use AppBundle\Entity\User;
 
-class TeamType extends AbstractType
+class TeamTeamsType extends AbstractType
 {
 
     /**
@@ -16,8 +17,10 @@ class TeamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('name', 'text', array('label' => 'Nazwa'))
-                ->add('imageName', 'file', array('label' => 'Logo Drużyny'))
+                ->add('name', 'entity', array(
+                    'label' => 'Drużyna',
+                    'class' => 'AppBundle:Team'
+                ))
         ;
     }
 
@@ -36,7 +39,7 @@ class TeamType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_team';
+        return 'appbundle_team_teams';
     }
 
 }

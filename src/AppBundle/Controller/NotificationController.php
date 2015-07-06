@@ -54,6 +54,31 @@ class NotificationController extends Controller
     }
 
     /**
+     * @Route("/hide/place_notification", name="hide_place_notifications")
+     */
+    public function hidePlaceAction()
+    {
+        $user = $this->getUser();
+        $myPlaces = $user->getPlaces();
+
+        $notifications = $this->getDoctrine()
+                ->getRepository('AppBundle:Notification')
+                ->getPlaceNotification($myPlaces, $user);
+
+        $em = $this->getDoctrine()->getManager();
+        if ($notifications) {
+            foreach ($notifications as $notification) {
+                $user->addHiddenNotification($notification);
+                $em->persist($notification);
+            }
+            $em->flush();
+        }
+
+
+        return $this;
+    }
+
+    /**
      * @Route("/remove/notification")
      * @Template()
      */
@@ -92,7 +117,7 @@ class NotificationController extends Controller
                     'notifications' => $notifications,
         ]);
     }
-    
+
     /**
      * @Route("/list/place_notifications/{user}", name="place_notification_list")
      */
@@ -102,11 +127,11 @@ class NotificationController extends Controller
 
         $notifications = $this->getDoctrine()
                 ->getRepository('AppBundle:Notification')
-                ->getPlaceNotification($myPlaces);
+                ->getPlaceNotification($myPlaces, $user);
 
 
 
-        return $this->render('Notification/list.html.twig', [
+        return $this->render('Notification/placeList.html.twig', [
                     'notifications' => $notifications,
         ]);
     }

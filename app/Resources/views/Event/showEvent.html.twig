@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-                        {% if app.user == single.admin and single.startDate < date('now') %}
+                {% if app.user == single.admin and single.startDate < date('now') %}
                     <table class="table table-hover">
                         <tr>
                             <td>{{ single.startDate |date('Y/m/d h:m') }}</td>
@@ -49,123 +49,14 @@
                 {{ render(controller('AppBundle:Game:indexEvent', {'id': single.id } )) }}
             </div>
             <div class="col-sm-3 col-md-3">
-                <div class="content-right">
-                    LISTA GRACZY
-                    {{ render(controller('AppBundle:Team:list', {'id': single.id } )) }}
-                    <table class="table table-hover">
-                        <tr>
-                            <td><p>Administrator</p></td>
-                        </tr>
-                        <tr class="success">
-                            <td>
-                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                {{ single.admin }}
-                                {% if app.user and app.user != single %}
-                                    <div class="pull-right">
-                                        <a href="{{ path('add_friend', {'id': single.admin }) }}">
-                                            <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                                        </a>
-                                        <a href="{{ path('new_private_message',{'id':single.admin}) }}">
-                                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><br></td>
-                        </tr>
-                        <tr>
-                            <td><p>Szatnia</p></td>
-                        </tr>
-                        {% set ifPlayer = false %}
-
-                        {% for user in single.players %}                            
-                            {% if app.user == user %}
-                                {% set ifPlayer = true %}
-                            {% endif %}
-
-                            {% set ifInTeam = false %}
-
-                            {% for team in single.teams %}
-                                {% for player in team.players %}
-                                    {% if player == user %}
-                                        {% set ifInTeam = true %}
-                                    {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                            {% if ifInTeam == false %}
-                                <tr {% if app.user == user %} class="green" {% endif %}>
-                                    <td><a href="{{ path('show_user',{'id':user.id}) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>  
-                                            {{ user.username }} 
-                                            <p class="badge small">
-                                                {{ user.points }}</p></a>
-                                        <div class="pull-right">
-                                            {% if app.user != user and app.user %}
-                                                <a href="{{ path('add_friend', {'id': user}) }}"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
-                                                <a href="{{ path('new_private_message',{'id':user.id}) }}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a>
-                                                {% endif %}   
-                                                {% if (app.user == single.admin) or (app.user == user) %}
-                                                <a href="#"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-                                                {% endif %}
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </table>
-                    {% if ( single.capacity > single.players | length ) %}
-                        {% if (app.user == single.admin) %}
-                            <a href="{{ path('list_friends') }}" class="btn btn-info">Zaproś użytkownika</a>
-                        {% elseif (ifPlayer == false) %}
-                            <a href="{{ path('add_player', {'id': single.id }) }}" class="btn btn-info">Wpisz się</a>
-                        {% else %}
-                            <a href="{{ path('resign_player', {'id': single.id }) }}" class="btn btn-danger">Wypisz się</a>
-                        {% endif %}
-                    {% else %}
-                        {% if (ifPlayer == true) %}
-                            <a href="{{ path('resign_player', {'id': single.id }) }}" class="btn btn-danger">Wypisz się</a>
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <div class="content-right">
-                    WIADOMOŚCI
-                    <table class="table table-hover">
-
-                        {% for message in messages %}
-                            {% if messages %}
-                                <tr>
-                                    <td>
-                                        <p>{{ message.message }}</p>
-                                        <p class="small">Dodano {{ message.createdAt | date('d/m/Y') }} przez {{ message.createdBy }} 
-                                            <a href="#" class="pull-right"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
-                                        </p>
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td>
-                                        <p>Bądź pierwszy, naspisz wiadomość</p>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </table>
-                    <div class="row no-margin">
-                        {% if not app.user %}
-                            <p>Aby móc dodawać komentarz musisz się wcześniej <a href="{{ path('fos_user_security_login') }}" title="Formularz logowania">zalogować</a>.</p>
-                        {% else %}
-                            <form method="post" novalidate>
-                                <div class="form-group">
-                                    {{ form_row(form.message) }}
-                                </div>
-                                {{ form_rest(form) }}
-                                <input class="btn btn-success" type="submit" value="Opublikuj" />
-                            </form>
-                        {% endif %}
-                    </div>
-
-                </div>
+                {% if single.type == 1 or single.type == 2 %}
+                    {% include 'Event/twoTeamPersonal.html.twig' %}
+                {% elseif single.type == 3 or single.type == 4 %}
+                    {% include 'Event/twoTeamTeams.html.twig' %}
+                {% else %}
+                    {% include 'Event/noTeam.html.twig' %}
+                {% endif %}
+                {% include 'Event/messages.html.twig' %}   
             </div>
 
         {% endfor %}

@@ -5,9 +5,17 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
+use AppBundle\Form\TeamTeamsType;
+use AppBundle\Form\TeamType;
 
+/**
+ * Team controller.
+ *
+ * @Route("/team")
+ */
 class TeamController extends Controller
 {
 
@@ -84,6 +92,60 @@ class TeamController extends Controller
     }
 
     /**
+     * @Route("/add/myteam/{event}", name="add_my_team")
+     */
+    public function addMyTeamAction(Event $event, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $team = new Team();
+
+        $form = $this->createForm(new TeamTeamsType(), $team);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $event->addTeam($form["name"]->getData());
+            $em->flush();
+
+            return $this->redirectToRoute('show_event', [
+                        'id' => $event->getId()
+            ]);
+        }
+
+        return $this->render('Team/add.html.twig', array(
+                    'form' => $form->createView(),
+                    'id' => $event->getId()
+        ));
+    }
+
+    /**
+     * @Route("/add/team/{event}", name="add_team")
+     */
+    public function addTeamAction(Event $event, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $team = new Team();
+
+        $form = $this->createForm(new TeamType(), $team);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $em->persist($team);
+            $event->addTeam($team);
+            $em->flush();
+
+            return $this->redirectToRoute('show_event', [
+                        'id' => $event->getId()
+            ]);
+        }
+
+        return $this->render('Team/addTeam.html.twig', array(
+                    'form' => $form->createView(),
+                    'id' => $event->getId()
+        ));
+    }
+
+    /**
      * @Route("/remove/team/{team}/{event}", name="remove_user_from_team")
      */
     public function removeAction(Team $team, Event $event)
@@ -111,6 +173,7 @@ class TeamController extends Controller
      */
     public function createAction()
     {
+
         return array(
                 // ...
         );

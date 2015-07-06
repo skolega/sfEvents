@@ -37,13 +37,8 @@ class PlaceReservationController extends Controller
             $reservation->setType(2);
             $reservation->setStatus(1);
             
-            $notification = new Notification;
-            $notification->addPlace($place);
-            $notification->addUser($user);
-            $notification->setType(7);
-            
-            $em->persist($notification);
-            $em->flush();
+            $notify = $this->get('notification');
+            $notify->addEventNotification($user, $place, 7);
         }
 
         $em->persist($reservation);

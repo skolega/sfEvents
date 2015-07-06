@@ -1,6 +1,6 @@
 <div class="width-220  notifications-menu">
-    {% if notifications %}
-        {% set ifOdd = 0 %}
+    {% set ifOdd = 0 %}
+    {% if notifications | length > 0 %}
         {% for notify in notifications %}
             <div class="row no-margin">
                 <a href="#">
@@ -19,21 +19,10 @@
                                         <span class="text-success small">{{ user.username }}</span>
                                     </a>
                                     {% endfor %}
-                                        {%if notify.type == 3 %}
-                                            <span class="text-muted small"> dodał wydarzenie o nazwie </span>
-                                        {% elseif notify.type == 4 %}
-                                            <span class="text-muted small"> weźmie udział w </span>
-                                        {% elseif notify.type == 5 %}
-                                            <span class="text-muted small"> zrezygnował z </span> 
-                                        {% elseif notify.type == 6 %}
-                                            <span class="text-muted small"> zrezygnował z </span>
-
-                                        {% endif %}
-                                        {% if notify.event %}
-                                            {% for event in notify.event %}
-                                                <a href="{{ path('show_event', { 'id' : event.id }) }}">
-                                                    <span class="text-warning small">{{ event.name }}</span>
-                                                </a>
+                                        {% if notify.type == 7 %}
+                                            <span class="text-muted small"> chce zarezerwować </span>
+                                            {% for place in notify.place %}
+                                                <span class="text-primary small"> {{ place.name }} </span>
                                             {% endfor %}
                                         {% endif %}
                                     </div>

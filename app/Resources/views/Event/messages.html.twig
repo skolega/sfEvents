@@ -1,0 +1,36 @@
+<div class="content-right">
+    WIADOMOŚCI
+    <table class="table table-hover">
+        {% for message in messages %}
+            {% if messages %}
+                <tr>
+                    <td>
+                        <p>{{ message.message }}</p>
+                        <p class="small">Dodano {{ message.createdAt | date('d/m/Y') }} przez {{ message.createdBy }} 
+                            <a href="#" class="pull-right"><span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
+                        </p>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>
+                        <p>Bądź pierwszy, naspisz wiadomość</p>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <div class="row no-margin">
+        {% if not app.user %}
+            <p>Aby móc dodawać komentarz musisz się wcześniej <a href="{{ path('fos_user_security_login') }}" title="Formularz logowania">zalogować</a>.</p>
+        {% else %}
+            <form method="post" novalidate>
+                <div class="form-group">
+                    {{ form_row(form.message) }}
+                </div>
+                {{ form_rest(form) }}
+                <input class="btn btn-success" type="submit" value="Opublikuj" />
+            </form>
+        {% endif %}
+    </div>
+</div>
