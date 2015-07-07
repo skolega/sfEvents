@@ -12,5 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class TeamRepository extends EntityRepository
 {
+    public function getMyTeams($user){
+        
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('t')
+                ->from('AppBundle:Team','t')
+                ->leftJoin('t.teamAdmin', 'a')
+                ->leftJoin('t.players', 'p')
+                ->where('t.type = 2')
+                ->andWhere('a.id = :user')
+                ->orWhere('p.id = :user')
+                ->setParameter('user', $user)
+                ->orderBy('t.name', 'ASC');
+        
+        return $qb->getQuery()->getResult();
+    }
     
 }

@@ -6,6 +6,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinColumns;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use AppBundle\Entity\User;
@@ -46,6 +47,12 @@ class User extends BaseUser
      * @JoinTable(name="team_players")
      */
     private $team;
+    
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="Team", mappedBy="teamAdmin")
+     */
+    private $myTeam;
 
     /**
      * @ORM\ManyToMany(targetEntity="Event", mappedBy="admin")
@@ -60,9 +67,8 @@ class User extends BaseUser
     private $hidden_friends;
     
 
-
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="hidden_friends")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="hidden_friends")
      */
     private $my_id;
 
@@ -941,49 +947,38 @@ class User extends BaseUser
         return $this->reservations;
     }
 
+ 
+
     /**
-     * Set myteam
+     * Add myTeam
      *
-     * @param \AppBundle\Entity\Team $myteam
+     * @param \AppBundle\Entity\Team $myTeam
      * @return User
      */
-    public function setMyteam(\AppBundle\Entity\Team $myteam = null)
+    public function addMyTeam(\AppBundle\Entity\Team $myTeam)
     {
-        $this->myteam = $myteam;
+        $this->myTeam[] = $myTeam;
 
         return $this;
     }
 
     /**
-     * Get myteam
+     * Remove myTeam
      *
-     * @return \AppBundle\Entity\Team 
+     * @param \AppBundle\Entity\Team $myTeam
      */
-    public function getMyteam()
+    public function removeMyTeam(\AppBundle\Entity\Team $myTeam)
     {
-        return $this->myteam;
+        $this->myTeam->removeElement($myTeam);
     }
 
     /**
-     * Add myteam
+     * Get myTeam
      *
-     * @param \AppBundle\Entity\Team $myteam
-     * @return User
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function addMyteam(\AppBundle\Entity\Team $myteam)
+    public function getMyTeam()
     {
-        $this->myteam[] = $myteam;
-
-        return $this;
-    }
-
-    /**
-     * Remove myteam
-     *
-     * @param \AppBundle\Entity\Team $myteam
-     */
-    public function removeMyteam(\AppBundle\Entity\Team $myteam)
-    {
-        $this->myteam->removeElement($myteam);
+        return $this->myTeam;
     }
 }

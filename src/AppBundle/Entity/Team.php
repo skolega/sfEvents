@@ -31,6 +31,13 @@ class Team
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type", type="smallint")
+     */
+    private $type;
 
     /**
      * @ORM\ManyToMany(targetEntity="Score", mappedBy="team")
@@ -48,6 +55,12 @@ class Team
      * @ORM\ManyToMany(targetEntity="User", mappedBy="team")
      */
     private $players;
+    
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="myTeam")
+     */
+    private $teamAdmin;
     
 
     /**
@@ -284,49 +297,61 @@ class Team
         return $this->scores;
     }
 
+   
+
     /**
-     * Set team_captain
+     * Set type
      *
-     * @param \AppBundle\Entity\User $teamCaptain
+     * @param integer $type
      * @return Team
      */
-    public function setTeamCaptain(\AppBundle\Entity\User $teamCaptain = null)
+    public function setType($type)
     {
-        $this->team_captain = $teamCaptain;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Get team_captain
+     * Get type
      *
-     * @return \AppBundle\Entity\User 
+     * @return integer 
      */
-    public function getTeamCaptain()
+    public function getType()
     {
-        return $this->team_captain;
+        return $this->type;
     }
 
     /**
-     * Add team_captain
+     * Add teamAdmin
      *
-     * @param \AppBundle\Entity\User $teamCaptain
+     * @param \AppBundle\Entity\User $teamAdmin
      * @return Team
      */
-    public function addTeamCaptain(\AppBundle\Entity\User $teamCaptain)
+    public function addTeamAdmin(\AppBundle\Entity\User $teamAdmin)
     {
-        $this->team_captain[] = $teamCaptain;
+        $this->teamAdmin[] = $teamAdmin;
 
         return $this;
     }
 
     /**
-     * Remove team_captain
+     * Remove teamAdmin
      *
-     * @param \AppBundle\Entity\User $teamCaptain
+     * @param \AppBundle\Entity\User $teamAdmin
      */
-    public function removeTeamCaptain(\AppBundle\Entity\User $teamCaptain)
+    public function removeTeamAdmin(\AppBundle\Entity\User $teamAdmin)
     {
-        $this->team_captain->removeElement($teamCaptain);
+        $this->teamAdmin->removeElement($teamAdmin);
+    }
+
+    /**
+     * Get teamAdmin
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeamAdmin()
+    {
+        return $this->teamAdmin;
     }
 }

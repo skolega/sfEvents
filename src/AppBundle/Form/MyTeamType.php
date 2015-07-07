@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class TeamTeamsType extends AbstractType
+class MyTeamType extends AbstractType
 {
 
     /**
@@ -16,10 +16,8 @@ class TeamTeamsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('name', 'entity', array(
-                    'label' => 'Drużyna',
-                    'class' => 'AppBundle:Team'
-                ))
+                ->add('name', 'text', array('label' => 'Nazwa'))
+                ->add('imageName', 'file', array('label' => 'Logo Drużyny'))
         ;
     }
 
@@ -38,7 +36,7 @@ class TeamTeamsType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_team_teams';
+        return 'appbundle_team';
     }
 
 }

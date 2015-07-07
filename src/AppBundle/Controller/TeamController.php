@@ -10,6 +10,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Team;
 use AppBundle\Form\TeamTeamsType;
 use AppBundle\Form\TeamType;
+use AppBundle\Form\MyTeamType;
 
 /**
  * Team controller.
@@ -169,14 +170,32 @@ class TeamController extends Controller
     }
 
     /**
-     * @Route("/create")
+     * @Route("/create", name="create_myTeam")
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $team = new Team();
+        $user = $this->getUser();
 
-        return array(
-                // ...
-        );
+        $form = $this->createForm(new MyTeamType(), $team);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $team->addTeamAdmin($user);
+            $team->addPlayer($user);
+            $team->setType(2);
+            $em->persist($team);
+            $em->flush();
+
+            return $this->redirectToRoute('index_team', [
+                        'id' => $team->getId()
+            ]);
+        }
+
+        return $this->render('Team/addMyTeam.html.twig', array(
+                    'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -188,6 +207,22 @@ class TeamController extends Controller
         return array(
                 // ...
         );
+    }
+
+    /**
+     * @Route("/index", name="index_team")
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $teams = $em->getRepository('AppBundle:Team')
+                ->getMyTeams($user->getId());
+
+        return $this->render('Team/index.html.twig', [
+                    'teams' => $teams,
+        ]);
     }
 
 }
