@@ -29,6 +29,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        # other form themes
+        - 'VichUploaderBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -114,9 +117,12 @@ services:
 
 liip_imagine:
     resolvers:
-       default:
-          web_path: ~
-
+        default:
+            web_path:  
+                web_root: %kernel.root_dir%/../web/images
+                # %kernel.root_dir%/../web/img is the folder where filtered images will be created!
+                cache_prefix: media/cache
+                # media/cache the prefix of folder where the cached images will be created
     filter_sets:
         cache: ~
         event_image_thumb:
@@ -127,19 +133,32 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [1000, 200], mode: outbound }
+        team_image_big:
+            quality: 75
+            filters:
+                thumbnail: { size: [200, 100], mode: outbound }
                 
 vich_uploader:
     db_driver: orm
     mappings:
-        product_image:
-            uri_prefix:         images/events
-            upload_destination: %kernel.root_dir%/../web/images/events
+        event_image:
+            uri_prefix:         /images
+            upload_destination: %kernel.root_dir%/../web/images
+            namer:              vich_uploader.namer_uniqid
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         user_image:
-            uri_prefix:         images/user
-            upload_destination: %kernel.root_dir%/../web/images/user
+            uri_prefix:         /images
+            upload_destination: %kernel.root_dir%/../web/images
+            namer:              vich_uploader.namer_uniqid
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        team_image:
+            uri_prefix:         /images
+            upload_destination: %kernel.root_dir%/../web/images
+            namer:              vich_uploader.namer_uniqid
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true

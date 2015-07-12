@@ -6,9 +6,18 @@
     {% if teams | length == 0 %}
         Nie posiadasz własnych drużyn <a href="{{ path('create_myTeam') }}" class="btn btn-primary">Dodaj własną drużynę</a>
     {% else %}
-        {% for team in teams %}
-            {{ team.name }}
-        {% endfor %}
+        <div class="row">
+            {% for team in teams %}
+                <div class="col-md-2 col-md-offset-1">
+                    <div>
+                     {{ team.name }}
+                    </div>
+                    <div>
+                        <img src="{{ asset('images/teams/'~ team.imageName) | imagine_filter('team_image_big') }}"  alt="{{ team.name }}_logo">
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
         <a href="{{ path('create_myTeam') }}" class="btn btn-primary">Dodaj własną drużynę</a>
     {% endif %}
 {% endblock %}

@@ -3,15 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping\JoinTable;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Team
  *
  * @ORM\Table(name="team")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
+ * @Vich\Uploadable
  */
 class Team
 {
@@ -31,7 +33,7 @@ class Team
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-    
+
     /**
      * @var integer
      *
@@ -40,10 +42,16 @@ class Team
     private $type;
 
     /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime $updatedAt
+     */
+    protected $updatedAt;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Score", mappedBy="team")
      */
     private $scores;
-    
 
     public function __toString()
     {
@@ -55,13 +63,12 @@ class Team
      * @ORM\ManyToMany(targetEntity="User", mappedBy="team")
      */
     private $players;
-    
+
     /**
      *
      * @ORM\ManyToMany(targetEntity="User", inversedBy="myTeam")
      */
     private $teamAdmin;
-    
 
     /**
      * @ORM\ManyToMany(targetEntity="Notification", inversedBy="team")
@@ -74,8 +81,11 @@ class Team
     private $event;
 
     /**
+     * * @Assert\File(
+     *     maxSize="1M",
+     *     mimeTypes={"image/png", "image/jpeg", "image/pjpeg"}
+     * )
      * @Vich\UploadableField(mapping="team_image", fileNameProperty="imageName")
-     *
      * @var File $imageFile
      */
     private $imageFile;
@@ -92,7 +102,10 @@ class Team
      */
     public function __construct()
     {
+        $this->scores = new \Doctrine\Common\Collections\ArrayCollection();
         $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->teamAdmin = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->notifications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->event = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -130,71 +143,60 @@ class Team
     }
 
     /**
-     * Add players
+     * Set type
      *
-     * @param \AppBundle\Entity\User $players
+     * @param integer $type
      * @return Team
      */
-    public function addPlayer(\AppBundle\Entity\User $players)
+    public function setType($type)
     {
-        $this->players[] = $players;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Remove players
+     * Get type
      *
-     * @param \AppBundle\Entity\User $players
+     * @return integer 
      */
-    public function removePlayer(\AppBundle\Entity\User $players)
+    public function getType()
     {
-        $this->players->removeElement($players);
+        return $this->type;
     }
 
     /**
-     * Get players
+     * Set updatedAt
      *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPlayers()
-    {
-        return $this->players;
-    }
-
-    /**
-     * Add event
-     *
-     * @param \AppBundle\Entity\Event $event
+     * @param \DateTime $updatedAt
      * @return Team
      */
-    public function addEvent(\AppBundle\Entity\Event $event)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->event[] = $event;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Remove event
+     * Get updatedAt
      *
-     * @param \AppBundle\Entity\Event $event
+     * @return \DateTime 
      */
-    public function removeEvent(\AppBundle\Entity\Event $event)
+    public function getUpdatedAt()
     {
-        $this->event->removeElement($event);
+        return $this->updatedAt;
     }
 
     /**
-     * Get event
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function getEvent()
-    {
-        return $this->event;
-    }
-
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
@@ -231,40 +233,6 @@ class Team
     }
 
     /**
-     * Add notifications
-     *
-     * @param \AppBundle\Entity\Notification $notifications
-     * @return Team
-     */
-    public function addNotification(\AppBundle\Entity\Notification $notifications)
-    {
-        $this->notifications[] = $notifications;
-
-        return $this;
-    }
-
-    /**
-     * Remove notifications
-     *
-     * @param \AppBundle\Entity\Notification $notifications
-     */
-    public function removeNotification(\AppBundle\Entity\Notification $notifications)
-    {
-        $this->notifications->removeElement($notifications);
-    }
-
-    /**
-     * Get notifications
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
-    }
-
-
-    /**
      * Add scores
      *
      * @param \AppBundle\Entity\Score $scores
@@ -297,29 +265,37 @@ class Team
         return $this->scores;
     }
 
-   
-
     /**
-     * Set type
+     * Add players
      *
-     * @param integer $type
+     * @param \AppBundle\Entity\User $players
      * @return Team
      */
-    public function setType($type)
+    public function addPlayer(\AppBundle\Entity\User $players)
     {
-        $this->type = $type;
+        $this->players[] = $players;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Remove players
      *
-     * @return integer 
+     * @param \AppBundle\Entity\User $players
      */
-    public function getType()
+    public function removePlayer(\AppBundle\Entity\User $players)
     {
-        return $this->type;
+        $this->players->removeElement($players);
+    }
+
+    /**
+     * Get players
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlayers()
+    {
+        return $this->players;
     }
 
     /**
@@ -354,4 +330,71 @@ class Team
     {
         return $this->teamAdmin;
     }
+
+    /**
+     * Add notifications
+     *
+     * @param \AppBundle\Entity\Notification $notifications
+     * @return Team
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notifications)
+    {
+        $this->notifications[] = $notifications;
+
+        return $this;
+    }
+
+    /**
+     * Remove notifications
+     *
+     * @param \AppBundle\Entity\Notification $notifications
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notifications)
+    {
+        $this->notifications->removeElement($notifications);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     * @return Team
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->event[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->event->removeElement($event);
+    }
+
+    /**
+     * Get event
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
 }

@@ -17,8 +17,11 @@ class MyTeamType extends AbstractType
     {
         $builder
                 ->add('name', 'text', array('label' => 'Nazwa'))
-                ->add('imageName', 'file', array('label' => 'Logo Drużyny'))
-        ;
+                ->add('imageFile', 'vich_image', array(
+                    'required' => false,
+                    'allow_delete' => true, // not mandatory, default is true
+                    'download_link' => true, // not mandatory, default is true
+        ));
     }
 
     /**
