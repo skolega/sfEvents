@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7a23fb335cee6645c4744e0218495468",
+    "hash": "20ddd0977a1552edc53c29fd6fefe6ee",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1660,16 +1660,16 @@
         },
         {
             "name": "league/url",
-            "version": "3.3.3",
+            "version": "3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/url.git",
-                "reference": "93ff2f7f55f8eee1b179f6c8ae94868e2626f065"
+                "reference": "f95aa87dacd5a93547fe8e2805116068027bd8f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/url/zipball/93ff2f7f55f8eee1b179f6c8ae94868e2626f065",
-                "reference": "93ff2f7f55f8eee1b179f6c8ae94868e2626f065",
+                "url": "https://api.github.com/repos/thephpleague/url/zipball/f95aa87dacd5a93547fe8e2805116068027bd8f0",
+                "reference": "f95aa87dacd5a93547fe8e2805116068027bd8f0",
                 "shasum": ""
             },
             "require": {
@@ -1678,8 +1678,7 @@
                 "true/punycode": "^2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0",
-                "scrutinizer/ocular": "^1.1"
+                "phpunit/phpunit": "^4.0"
             },
             "type": "library",
             "extra": {
@@ -1711,7 +1710,7 @@
                 "php",
                 "url"
             ],
-            "time": "2015-06-25 10:58:00"
+            "time": "2015-07-01 11:03:30"
         },
         {
             "name": "liip/imagine-bundle",
@@ -1790,16 +1789,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc"
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b287fbbe1ca27847064beff2bad7fb6920bf08cc",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
                 "shasum": ""
             },
             "require": {
@@ -1836,7 +1835,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14.x-dev"
+                    "dev-master": "1.15.x-dev"
                 }
             },
             "autoload": {
@@ -1862,7 +1861,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-06-19 13:29:54"
+            "time": "2015-07-12 13:54:09"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -2687,16 +2686,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.6.9",
+            "version": "v2.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "b06539573ccf64dd3a62852685f052553d02c5ba"
+                "reference": "e246af5f3bdf64fa5a85936ee78e3574e094cf5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/b06539573ccf64dd3a62852685f052553d02c5ba",
-                "reference": "b06539573ccf64dd3a62852685f052553d02c5ba",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/e246af5f3bdf64fa5a85936ee78e3574e094cf5f",
+                "reference": "e246af5f3bdf64fa5a85936ee78e3574e094cf5f",
                 "shasum": ""
             },
             "require": {
@@ -2800,7 +2799,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-05-29 22:55:07"
+            "time": "2015-07-13 09:34:32"
         },
         {
             "name": "true/punycode",

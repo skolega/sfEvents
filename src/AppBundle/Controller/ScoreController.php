@@ -38,14 +38,16 @@ class ScoreController extends Controller
     /**
      * Creates a new Score entity.
      *
-     * @Route("/", name="score_create")
+     * @Route("/{team1}/vs/{team2}/{game}", name="score_create")
      * @Method("POST")
      * @Template("AppBundle:Score:new.html.twig")
      */
     public function createAction(Request $request)
     {
         $entity = new Score();
-        $form = $this->createCreateForm($entity);
+        $entity1 = new Score();
+        
+        $form = $this->createForm(new ScoreType(), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

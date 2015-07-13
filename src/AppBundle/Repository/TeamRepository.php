@@ -20,11 +20,13 @@ class TeamRepository extends EntityRepository
                 ->from('AppBundle:Team','t')
                 ->leftJoin('t.teamAdmin', 'a')
                 ->leftJoin('t.players', 'p')
-                ->where('t.type = 2')
-                ->andWhere('a.id = :user')
-                ->orWhere('p.id = :user')
+                ->leftJoin('t.category' , 'c')
+                ->where('t.type = :type')
+                ->orWhere('a.id = :user')
+                ->andWhere('p.id = :user')
                 ->setParameter('user', $user)
-                ->orderBy('t.name', 'ASC');
+                ->setParameter('type', 2)
+                ->orderBy('t.id', 'ASC');
         
         return $qb->getQuery()->getResult();
     }

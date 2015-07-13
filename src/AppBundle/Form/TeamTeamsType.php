@@ -5,9 +5,17 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class TeamTeamsType extends AbstractType
 {
+
+    public $anArray;
+
+    public function __construct($anArray)
+    {
+        $this->anArray = $anArray;
+    }
 
     /**
      * @param FormBuilderInterface $builder
@@ -18,7 +26,15 @@ class TeamTeamsType extends AbstractType
         $builder
                 ->add('name', 'entity', array(
                     'label' => 'Drużyna',
-                    'class' => 'AppBundle:Team'
+                    'class' => 'AppBundle:Team',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('t')
+                                ->leftJoin('t.teamAdmin', 'u')
+                                ->where('u.id IN (:user)')
+                                ->setParameter('user', $this->anArray['user_id'])
+                                ->orderBy('u.username', 'ASC')
+                        ;
+                    },
                 ))
         ;
     }

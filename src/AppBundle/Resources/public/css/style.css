@@ -307,3 +307,10 @@ div.col-my:nth-child(8){
     background-color: #8CC63F !important;
     color: #FFF !important;
 }
+
+.score-board{
+    padding:15px;
+    color:white;
+    font-size: 21px;
+    font-weight: bolder;
+}

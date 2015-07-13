@@ -74,6 +74,11 @@ class Team
      * @ORM\ManyToMany(targetEntity="Notification", inversedBy="team")
      */
     private $notifications;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="team")
+     */
+    private $category;
 
     /**
      * @ORM\ManyToMany(targetEntity="Event", mappedBy="teams")
@@ -397,4 +402,27 @@ class Team
         return $this->event;
     }
 
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\Category $category
+     * @return Team
+     */
+    public function setCategory(\AppBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 }

@@ -34,6 +34,11 @@ class Category
      * @ORM\ManyToMany(targetEntity="Place", mappedBy="category")
      */
     private $places;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Team", mappedBy="category")
+     */
+    private $team;
 
     /**
      * @var string
@@ -207,5 +212,38 @@ class Category
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * Add team
+     *
+     * @param \AppBundle\Entity\Team $team
+     * @return Category
+     */
+    public function addTeam(\AppBundle\Entity\Team $team)
+    {
+        $this->team[] = $team;
+
+        return $this;
+    }
+
+    /**
+     * Remove team
+     *
+     * @param \AppBundle\Entity\Team $team
+     */
+    public function removeTeam(\AppBundle\Entity\Team $team)
+    {
+        $this->team->removeElement($team);
+    }
+
+    /**
+     * Get team
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTeam()
+    {
+        return $this->team;
     }
 }

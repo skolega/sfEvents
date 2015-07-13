@@ -6,18 +6,51 @@
     {% if teams | length == 0 %}
         Nie posiadasz własnych drużyn <a href="{{ path('create_myTeam') }}" class="btn btn-primary">Dodaj własną drużynę</a>
     {% else %}
-        <div class="row">
-            {% for team in teams %}
-                <div class="col-md-2 col-md-offset-1">
-                    <div>
-                     {{ team.name }}
-                    </div>
-                    <div>
-                        <img src="{{ asset('images/teams/'~ team.imageName) | imagine_filter('team_image_big') }}"  alt="{{ team.name }}_logo">
-                    </div>
-                </div>
-                {% endfor %}
+        <div class='row no-margin'>
+            <a href="{{ path('create_myTeam') }}" class="btn btn-primary">Dodaj własną drużynę</a>
         </div>
-        <a href="{{ path('create_myTeam') }}" class="btn btn-primary">Dodaj własną drużynę</a>
+        {% for team in teams %}
+            {% if loop.index % 4 == 0 or loop.first %}
+                <div class="row no-margin">
+                {% endif %}
+                <a href=''>
+                    <div class="col-md-2 col-md-offset-1">
+
+                        <div>
+                            <p class="category-thumbnail-header {{ team.category.color }}">sssss{{ team.category }}</p>
+                            <img src="{{ team.imageName | imagine_filter('team_image_big') }}"  alt="{{ team.name }}_logo">
+                        </div>
+                        <div>
+                            {{ team.name }}
+                        </div>
+                        {% if team.teamAdmin | length > 0 %}
+                            {% for admin in team.teamAdmin %}
+                                {% if admin == app.user %}
+                                    <div class='smoked text-primary'>
+                                        Kapitan
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <div class='smoked text-warning'>
+                                Zawodnik
+                            </div>
+                        {% endif %}
+                        <div class='text-success'>
+                            {{ team.players | length }} 
+                            {% if team.players | length == 1 %} 
+                                zawodnik 
+                            {% else %}
+                                zawodników
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% if loop.index % 4 == 0 or loop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+
     {% endif %}
 {% endblock %}

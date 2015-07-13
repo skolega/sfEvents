@@ -9,10 +9,14 @@
             <div class="row">
                 {% for team in single.teams %}
                     <th>
-                    <div class="col-md-1">
-                        <img src="{{ team.imageName }}" alt=""/>
+                    <div class="col-md-12">
+                        <div class='row'>
+                            <img src="{{ team.imageName | imagine_filter('team_image_small') }}" alt="" class='text-center'/>
+                        </div>
+                        <div class='row'>
+                            {{ team.name }} 
+                        </div>
                     </div>
-                    <div class="col-md-4">{{ team.name }} </div>
                     </th>
                     {% if loop.index == 1 %}
                         <div class="col-md-2">

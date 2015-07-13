@@ -16,12 +16,17 @@ class MyTeamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('name', 'text', array('label' => 'Nazwa'))
-                ->add('imageFile', 'vich_image', array(
-                    'required' => false,
-                    'allow_delete' => true, // not mandatory, default is true
-                    'download_link' => true, // not mandatory, default is true
-        ));
+        ->add('name', 'text', array('label' => 'Nazwa'))
+        ->add('imageFile', 'vich_image', array(
+        'required' => false,
+        'allow_delete' => true, // not mandatory, default is true
+        'download_link' => true, // not mandatory, default is true
+        ))
+        ->add('category', 'entity', array(
+        'class' => 'AppBundle:Category',
+        'placeholder' => 'Wybierz kategorie',
+        'label' => 'Kategoria',
+        )        );
     }
 
     /**

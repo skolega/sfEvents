@@ -99,8 +99,9 @@ class TeamController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $team = new Team();
+        $userId = $this->getUser()->getId();
 
-        $form = $this->createForm(new TeamTeamsType(), $team);
+        $form = $this->createForm(new TeamTeamsType(array('user_id' => $userId)), $team);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -114,7 +115,7 @@ class TeamController extends Controller
 
         return $this->render('Team/add.html.twig', array(
                     'form' => $form->createView(),
-                    'id' => $event->getId()
+                    'id' => $event->getId(),
         ));
     }
 
@@ -183,7 +184,7 @@ class TeamController extends Controller
 
         if ($form->isValid()) {
             $team->addTeamAdmin($user);
-            $team->addPlayer($user);
+            $user->addTeam($team);
             $team->setType(2);
             $em->persist($team);
             $em->flush();
