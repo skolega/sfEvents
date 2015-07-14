@@ -10,6 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use AppBundle\Entity\Game;
 use AppBundle\Form\GameType;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Score;
+use AppBundle\Entity\Team;
+use AppBundle\Form\GameScoreType;
 
 /**
  * Game controller.
@@ -267,6 +270,57 @@ class GameController extends Controller
         return $this->render('Game\indexEvent.html.twig', array(
             'entities' => $entities,
             'teams' => $teams,
+        ));
+    }
+    
+    /**
+     * @Route("/addgamescore/{event}", name="add_score")
+     */
+    public function addScoreAction(Event $event, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $teams = $event->getTeams();
+        
+        $game = new Game();
+
+        $score1 = new Score();
+        $score1->name = 'score1';
+        $game->getScores()->add($score1);
+        $score2 = new Score();
+        $score2->name = 'score2';
+        $game->getScores()->add($score2);
+
+
+        $form = $this->createForm(new GameScoreType(), $game);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $score1->addTeam($teams[0]);
+            $score2->addTeam($teams[1]);
+            $score1->setGame($game);
+            $score2->setGame($game);
+            $game->addScore($score1);
+            $game->addScore($score2);
+            $game->setPlayed(true);
+            $game->setVerified(false);
+            $game->addEvent($event);
+            $game->setDate($event->getStartDate());
+            
+            $em->persist($score1);
+            $em->persist($score2);
+            $em->persist($game);
+            
+            $em->flush();
+            
+            return $this->redirectToRoute('show_event', [
+                'id' => $event->getId(),
+            ]);
+        }
+
+        return $this->render('AppBundle:Game:newScore.html.twig', array(
+            'form' => $form->createView(),
+            'single' => $event,
         ));
     }
 

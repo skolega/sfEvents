@@ -34,17 +34,14 @@
                         </div>
                     </div>
                 </div>
-                {% if app.user == single.admin and single.startDate < date('now') %}
-                    <table class="table table-hover">
-                        <tr>
-                            <td>{{ single.startDate |date('Y/m/d h:m') }}</td>
-                        <form action="">
-                            <td><input type="text"/></td>
-                            <td><input type="text"/></td>
-                            <td><button class="btn btn-primary pull-right" type="submit">Dodaj wynik</button></td>
-                        </form>
-                        </tr>
-                    </table>
+                {% if single.games | length > 0 %}
+                    {% if app.user == single.admin and single.startDate < date('now') and (single.games | last).date != single.startDate %}
+                        {{ render(controller('AppBundle:Game:addScore', {'event':single.id} )) }}
+                    {% endif %}
+                {% else %}
+                    {% if app.user == single.admin and single.startDate < date('now') %}
+                        {{ render(controller('AppBundle:Game:addScore', {'event':single.id} )) }}
+                    {% endif %}
                 {% endif %}
                 {{ render(controller('AppBundle:Game:indexEvent', {'id': single.id } )) }}
             </div>

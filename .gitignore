@@ -12,3 +12,6 @@
 /composer.phar
 *.php~
 /nbproject/
+/web/images/teams/*
+/web/images/events/*
+/web/images/users/*

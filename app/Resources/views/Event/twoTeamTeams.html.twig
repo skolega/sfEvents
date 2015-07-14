@@ -11,14 +11,15 @@
                     <th>
                     <div class="col-md-12">
                         <div class='row'>
+                            <div class="col-md-5">
                             <img src="{{ team.imageName | imagine_filter('team_image_small') }}" alt="" class='text-center'/>
                         </div>
-                        <div class='row'>
+                        <div class="col-md-7">
                             {{ team.name }} 
                         </div>
                     </div>
                     </th>
-                    {% if loop.index == 1 %}
+                    {% if loop.index == 0 %}
                         <div class="col-md-2">
                             <th>vs</th>
                         </div>

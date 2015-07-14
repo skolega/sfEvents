@@ -6,26 +6,30 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ScoreType extends AbstractType
+class GameScoreType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
-            ->add('score')
-        ;
+                ->add('scores', 'collection', array(
+                    'type' => new ScoreType(),
+                ))
+                ->add('description');
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Score'
+            'data_class' => 'AppBundle\Entity\Game'
         ));
     }
 
@@ -34,6 +38,7 @@ class ScoreType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_score';
+        return 'appbundle_game';
     }
+
 }

@@ -1,0 +1,25 @@
+
+
+<form method="post" action="{{ path('add_score', {'event':single.id }) }}" novalidate >
+{{ form_start(form) }}
+<table class='table'>
+    <thead>
+        <tr>
+            <th>Drużyna #1</th>
+            <th>Drużyna #2</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {% for team in form.scores %}
+                <td>{{ form_row(team.score) }}</td>
+            {% endfor %}
+            <td><button type='submit' class='btn btn-primary'>Zatwierdź wynik</button></td>
+        </tr>
+    </tbody>
+
+</table>
+
+{{ form_end(form) }}
+</form>

@@ -32,9 +32,7 @@
                 <div class='row no-margin'>
                     {% for team in score.team %}
                         <div class='row'>
-                            <img href='{{ team.imageName | imagine_filter('team_image_small') }}' alt='{{ team.imageName }}_logo'/>
-                        </div>
-                        <div class='row'>
+                            <img src="{{ team.imageName | imagine_filter('team_image_small') }}" alt="" class='text-center'/>
                             {{ team.name }}
                         </div>
                     {% endfor %}
