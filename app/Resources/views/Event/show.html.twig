@@ -5,21 +5,31 @@
 {% block sidebar %}
     <h1>Znajdź wydarzenie </h1>
     <hr>
-    <form class="navbar-form navbar-left" role="search" action="{{ path('search_event') }}">
+    <form class="navbar-form navbar-left" role="search" action="{{ path('search_event' ) }}">
         <div class="form-group">
             <label>Miasto</label></br>
-            <input type="text" class="form-control" name="city" id="tags"></br>
-            <label>Kategoria</label></br>
+            <input type="text" class="form-control" name="city" id="tags" placeholder="{{ searchQuery[0] }}"></br>
+            <label>Kategoria - {{ searchQuery[1] }}</label></br>
             <select class="form-control" name="category" id="category"></br>
-                <option value="">Wszystkie</option>
+                <option value="" disabled selected>Wszystkie</option>
                 {% for category in categories %}
                     <option value="{{ category.name }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
+            <label>Typ - {{ searchQuery[3] }}</label></br>
+            <select class="form-control" name="signuptype" id="type"></br>
+                <option value="" disabled selected>Wszystkie</option>
+                <option value="1">Dwie drużyny - publiczny</option>
+                <option value="2">Dwie drużyny - prywatny</option>
+                <option value="3">Dwie drużyny - drużynowy publiczny</option>
+                <option value="4">Dwie drużyny - drużynowy prywatny</option>
+                <option value="5">Bez drużyn - publiczny</option>
+                <option value="6">Bez drużyn - prywatny</option>
+            </select>
             <label>Data</label></br>
             <div class="row">
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" name="date" id="datepicker"></br>
+                    <input type="text" class="form-control" name="date" id="datepicker" placeholder="{{ searchQuery[2] }}"></br>
                 </div>
             </div>
         </div>

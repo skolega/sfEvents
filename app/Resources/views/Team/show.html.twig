@@ -1,0 +1,79 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Team:remove{% endblock %}
+
+{% block body %}
+        <div class="row no-margin">
+            <div class="col-lg-8">
+                <h4>Zapisani gracze</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th> Avatar </th>
+                            <th> Gracz </th>
+                            <th> Punkty </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in single.players %}
+                            <tr {% if player in single.teamAdmin %} class="darkorange" {% endif %}>
+                                <td><img src="{{ player.imageName }}"/></td>
+                                <td>{{ player.username }}</td>
+                                <td>{{ player.points }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <img src="{{ single.imageName | imagine_filter('team_image_big') }}" />
+                <h2>{{ single.name }}</h2>
+                <hr>
+                <h4>Ostatnie spotkania</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Drużyna</th>
+                            <th>Wynik</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for score in single.scores %}
+                            {% for game in score.game %}
+                                <tr>
+                                    <td>{{ game.date }}</td>
+                                    <td>
+                                        {% for team in game.teams %}
+                                            {{ team.name }}
+                                            {% if loop.first %}
+                                                - 
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for score in game.scores %}
+                                            {{ score.score }}
+                                            {% if loop.first %}
+                                                - 
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if (app.user in single.teamAdmin) %}
+            <div class="footermenu">
+                <div class="row no-margin">
+                    <a href="{{ path('invite_friend', {'team':single.id }) }}" class="btn btn-primary">Zaproś znajomych</a>
+                    <a href="{{ path('search_event', {'signuptype':3 }) }}" class="btn btn-primary">Znajdź rozgrywkę</a>
+                    <a href="" class="btn btn-primary">Dodaj kapitana</a>
+                </div>
+            </div>
+        {% endif %}
+{% endblock %}
+

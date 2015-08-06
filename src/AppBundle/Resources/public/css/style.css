@@ -314,3 +314,11 @@ div.col-my:nth-child(8){
     font-size: 21px;
     font-weight: bolder;
 }
+
+.footermenu{
+    padding:20px 10px;
+    position: fixed;
+    bottom: 0;
+    background-color: whitesmoke;
+    width:100%;
+}

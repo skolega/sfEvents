@@ -35,7 +35,7 @@
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="{{ path('category') }}">KATEGORIE <span class="sr-only">(current)</span></a></li>
                             <li><a href="{{ path('place') }}">OBIEKTY</a></li>
-                            <li><a href="#">TURNIEJE</a></li>
+                            <li><a href="{{ path('tournament') }}">TURNIEJE</a></li>
                             <li><a href="">WOJNA DRUŻYN</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -86,11 +86,16 @@
                                             <li><a href="{{ path('admin') }}">Panel admina</a></li>
                                             {% endif %}
                                         <li class="divider"></li>
-                                        <li><a href="{{ path('show_user_events', {'id': app.user.getId() }) }}">Moje eventy</a></li>
-                                        <li><a href="{{ path('index_team') }}">Moje Drużyny</a></li>
+                                        
+                                        <li><a href="{{ path('index_team') }}">Drużyny</a></li>
                                         <li><a href="{{ path('list_friends') }}">Znajomi</a></li>
-                                        <li><a href="#">Moja Liga</a></li>
                                         <li><a href="#">Zaproszenia</a></li>
+                                        
+                                        <li class="divider"></li>
+                                        <li><a href="{{ path('show_user_events', {'id': app.user.getId() }) }}">Wydarzenia</a></li>
+                                        <li><a href="#">Liga</a></li>
+                                        <li><a href="#">Turnieje</a></li>
+                                        
                                         <li class="divider"></li>
                                         <li><a href="{{ path('fos_user_profile_edit') }}">Profil</a></li>
                                         <li><a href="#">Ustawienia</a></li>

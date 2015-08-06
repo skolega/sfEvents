@@ -1,0 +1,32 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Team:remove{% endblock %}
+
+{% block body %}
+    {% for friend in friends %}
+        {% if loop.first or (loop.index % 4) == 0  %}
+            <div class="row">
+            {% endif %}
+            <a href="{{ path('add_team_friend', {'team':team.id, 'friend':friend.id}) }}">
+            <div class="thumbnail col-sm-3">
+                <div class="col-sm-4">
+                    <img src="{{ friend.imageName }}" alt="" />
+                </div>
+                <div class="col-lg-6">
+                    <a href="{{ path('show_user',{'id':friend.id}) }}">Nick: {{ friend }}</a>
+                    <br>
+                    <p>Imię i nazwisko: </p>
+                    <a href="{{ path('show_user',{'id':friend.id}) }}">{{ friend.name }} {{ friend.surname }}</a>
+                    <p class="small text-success">Punkty: {{ friend.points }}</p>
+                </div>
+                <div class="col-sm-2">
+                    <a href="{{ path('delete_friend', {'id':friend.id}) }}"<span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+                </div>
+            </div>
+            </a>
+            {% if loop.last or (loop.index % 4) == 0  %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+

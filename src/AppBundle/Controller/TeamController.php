@@ -226,4 +226,59 @@ class TeamController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/show/{team}", name="show_team")
+     */
+    public function showAction($team)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $teams = $em->getRepository('AppBundle:Team')
+                ->findOneBy(['id' => $team]);
+
+        return $this->render('Team/show.html.twig', [
+                    'single' => $teams,
+        ]);
+    }
+
+    /**
+     * @Route("/invite/friends/{team}", name="invite_friend")
+     */
+    public function inviteAction($team)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $teamObject = $em->getRepository('AppBundle:Team')
+                ->findOneBy(['id' => $team]);
+        
+        $user = $this->getUser();
+
+        $friends = $user->getMyFriends();        
+
+        return $this->render('Team/inviteFriend.html.twig', [
+                    'friends' => $friends,
+                    'team' => $teamObject,
+        ]);
+    }
+
+    /**
+     * @Route("/addfriend/{team}/{friend}", name="add_team_friend")
+     */
+    public function addFriendAction($team, $friend)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $teamObject = $em->getRepository('AppBundle:Team')
+                ->findOneBy(['id' => $team]);
+        $friendObject = $em->getRepository('AppBundle:User')
+                ->findOneBy(['id' => $friend]);
+
+        $friendObject->addTeam($teamObject);
+        
+        $em->flush();
+        
+        return $this->render('Team/show.html.twig', [
+                    'single' => $teamObject,
+        ]);
+    }
+
 }

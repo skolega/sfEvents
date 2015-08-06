@@ -43,7 +43,7 @@ class EventController extends Controller
             $notify->addEventNotification($user, $event, 3);
 
             return $this->redirectToRoute('show_event', [
-                'id' => $event->getId(),
+                        'id' => $event->getId(),
             ]);
         }
 
@@ -199,15 +199,21 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/search/events", name="search_event")
+     * @Route("/search/events/{signuptype}", name="search_event", defaults={"signuptype": false})
      */
-    public function searchAction(Request $request)
+    public function searchAction($signuptype = null, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $city = $request->query->get('city');
-        $date = $request->query->get('date');
         $category = $request->query->get('category');
+        $date = $request->query->get('date');
+        if ($signuptype) {
+            $type = $signuptype;
+        } else {
+            $type = $request->query->get('signuptype');
+        }
+        $searchQuery = [$city, $category, $date, $type];
 
         $events = $em->createQueryBuilder()
                 ->select('e')
@@ -230,6 +236,10 @@ class EventController extends Controller
         if ($category != '') {
             $events->andWhere('c.name = :category')
                     ->setParameter('category', $category);
+        }
+        if ($type != '') {
+            $events->andWhere('e.type = :type')
+                    ->setParameter('type', $type);
         }
         $events->andWhere('e.enabled = :true')
                 ->setParameter('true', true)
@@ -265,6 +275,7 @@ class EventController extends Controller
                     'cities' => $cities,
                     'categories' => $categories,
                     'eventspromoted' => $eventspromoted,
+                    'searchQuery' => $searchQuery,
         ]);
     }
 

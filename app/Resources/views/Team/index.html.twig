@@ -13,7 +13,7 @@
             {% if loop.index % 4 == 0 or loop.first %}
                 <div class="row no-margin">
                 {% endif %}
-                <a href=''>
+                <a href='{{ path('show_team', {'team':team.id } ) }}'>
                     <div class="col-md-2 col-md-offset-1">
 
                         <div>
