@@ -184,6 +184,7 @@ class EventController extends Controller
                         ->getQuery()->getResult();
 
         $categories = $em->getRepository('AppBundle:Category')->findAll();
+        $searchQuery = [null, null, null, null];
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -195,6 +196,7 @@ class EventController extends Controller
                     'cities' => $cities,
                     'categories' => $categories,
                     'eventspromoted' => $eventspromoted,
+                    'searchQuery' => $searchQuery,
         ]);
     }
 

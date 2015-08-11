@@ -19,6 +19,7 @@
                                 <p>{{ single.loacation }}</p>
                                 {% set freePlaces = single.capacity - single.players | length %}
                                 <p>Wolne miejsca: 
+                                    {% if single.type in [1,2] %}
                                     {% if freePlaces > 3 %}
                                         <span class="text-success">
                                         {% else %}
@@ -27,6 +28,11 @@
                                             {{ freePlaces }}
                                         </span>
                                         z {{ single.capacity }}</p>
+                                    {% elseif single.type in [2,3] %}
+                                        {{ 2 - single.teams | length }}
+                                    {% else %}
+                                        brak limitu
+                                    {% endif %} 
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">

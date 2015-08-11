@@ -16,13 +16,27 @@
                     <option value="{{ category.name }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
-            <label>Typ - {{ searchQuery[3] }}</label></br>
+            <label>Typ - 
+                {% if searchQuery[3] == 1 %}
+                    Indywidualny - Dwie drużyny - publiczny
+                {% elseif searchQuery[3] == 2 %}
+                    Indywidualny - Dwie drużyny - prywatny
+                {% elseif searchQuery[3] == 3 %}
+                    Drużynowy - Dwie drużyny - publiczny    
+                {% elseif searchQuery[3] == 4 %}
+                    Drużynowy - Dwie drużyny - prywatny        
+                {% elseif searchQuery[3] == 5 %}
+                    Bez drużyn - publiczny            
+                {% elseif searchQuery[3] == 6 %}
+                    Bez drużyn - prywatny
+                {% endif %}
+            </label></br>
             <select class="form-control" name="signuptype" id="type"></br>
                 <option value="" disabled selected>Wszystkie</option>
-                <option value="1">Dwie drużyny - publiczny</option>
-                <option value="2">Dwie drużyny - prywatny</option>
-                <option value="3">Dwie drużyny - drużynowy publiczny</option>
-                <option value="4">Dwie drużyny - drużynowy prywatny</option>
+                <option value="1">Indywidualny - Dwie drużyny - publiczny</option>
+                <option value="2">Indywidualny - Dwie drużyny - prywatny</option>
+                <option value="3">Drużynowy - Dwie drużyny - publiczny</option>
+                <option value="4">Drużynowy - Dwie drużyny - prywatny</option>
                 <option value="5">Bez drużyn - publiczny</option>
                 <option value="6">Bez drużyn - prywatny</option>
             </select>
@@ -138,7 +152,7 @@
                                 </div>
                                 {% else %}
                                     <h4>Brak Obiektów spełniających wybrane kryteria</h4>
-                                    <h5> Możesz nowe wydarzenie 
+                                    <h5> Możesz dodać nowe wydarzenie 
                                         {% if app.user %}
                                         </h5>
                                         <a href ="{{ path('place_new') }}" class="btn btn-primary"><h4>Dodaj wydarzenie</h4></a>

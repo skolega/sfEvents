@@ -146,6 +146,28 @@ class TeamController extends Controller
                     'id' => $event->getId()
         ));
     }
+    
+    /**
+     * @Route("/remove/team/{event}/{team}", name="remove_team_from_event")
+     */
+    public function removeTeamAction(Event $event, Team $team)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $event->removeTeam($team);
+
+        $em->flush();
+
+        $notify = $this->get('notification');
+//        $notify->addTeamNotification($user, $event, $team, 2);
+
+//        $this->addFlash('success', sprintf('Drużyna "%s" została wypisana z eventu', $this->getUser()->getUsername()));
+
+        return $this->redirectToRoute('show_event', [
+                    'id' => $event->getId()
+        ]);
+    }
 
     /**
      * @Route("/remove/team/{team}/{event}", name="remove_user_from_team")
