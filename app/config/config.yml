@@ -110,6 +110,9 @@ hwi_oauth:
                display: popup    
                
 services:
+    fos_user.doctrine_registry:
+        alias: doctrine
+        
     app.user.provider:
         class: "AppBundle\Service\FOSUserProvider"
         #this is the place where the properties are passed to the UserProvider - see config.yml
