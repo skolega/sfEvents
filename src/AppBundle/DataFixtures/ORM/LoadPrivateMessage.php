@@ -12,7 +12,7 @@ class LoadPrivateMessageData extends AbstractFixture implements OrderedFixtureIn
 
     public function getOrder()
     {
-        return 7;
+        return 9;
     }
 
     public function load(ObjectManager $manager)

@@ -5,6 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{ asset('bundles/app/css/style.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('bundles/app/css/bootstrap-datetimepicker.css') }}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('bundles/app/css/jquery-ui.min.css') }}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('bundles/app/css/jquery-ui.structure.min.css') }}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('bundles/app/css/jquery-ui.theme.min.css') }}" rel="stylesheet" type="text/css" />
@@ -33,10 +34,9 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="{{ path('category') }}">KATEGORIE <span class="sr-only">(current)</span></a></li>
-                            <li><a href="{{ path('place') }}">OBIEKTY</a></li>
-                            <li><a href="{{ path('tournament') }}">TURNIEJE</a></li>
-                            <li><a href="">WOJNA DRUŻYN</a></li>
+                            <li class="active"><a href="{{ path('category') }}">WYDARZENIA <span class="sr-only">(current)</span></a></li>
+                            <li><a href="{{ path('place') }}">MIEJSCA</a></li>
+                            <li><a href="{{ path('tournament') }}">RYWALIZACJA</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{{ path('add_event') }}" class="button-jumpin"> + | Dodaj wydarzenie</a></li>
@@ -169,8 +169,9 @@
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-latest.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-            <script src="{{ asset('bundles/app/js/main.js') }}"></script>
             <script src="{{ asset('bundles/app/js/jquery-ui.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/bootstrap-datetimepicker.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/main.js') }}"></script>
         {% endblock %}
     </body>
 </html>

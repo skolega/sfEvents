@@ -11,7 +11,7 @@ class LoadMessageData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function getOrder()
     {
-        return 5;
+        return 7;
     }
 
     public function load(ObjectManager $manager)

@@ -12,7 +12,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 3;
+        return 4;
     }
 
     public function load(ObjectManager $manager)
@@ -22,6 +22,8 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         for ($j = 1; $j <= 40; $j++) {
             $team = new Team();
             $team->setName($faker->colorName());
+            $team->setType($faker->numberBetween(1,3));
+            $team->setUpdatedAt($faker->dateTimeThisYear);
             $this->addReference('team' . $j, $team);
             $team->setImageName('http://lorempixel.com/20/20/abstract/'.$faker->numberBetween(1,10));
             $manager->persist($team);

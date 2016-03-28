@@ -31,11 +31,11 @@ class DefaultController extends Controller
                         ->orderBy('a.city', 'ASC')
                         ->getQuery()->getResult();
 
-        $categories = $this->getDoctrine()->getRepository('AppBundle:Category')->findAll();
+        $categoryTypes = $this->getDoctrine()->getRepository('AppBundle:CategoryType')->findAll();
 
         return $this->render('default/index.html.twig', [
                     'events' => $events,
-                    'categories' => $categories,
+                    'categoryTypes' => $categoryTypes,
                     'cities' => $cities,
         ]);
     }

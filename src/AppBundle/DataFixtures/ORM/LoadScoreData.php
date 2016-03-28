@@ -12,7 +12,7 @@ class LoadScoreData extends AbstractFixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 11;
+        return 13;
     }
 
     public function load(ObjectManager $manager)

@@ -12,7 +12,7 @@ class LoadPlaceReservationData extends AbstractFixture implements OrderedFixture
 
     public function getOrder()
     {
-        return 9;
+        return 11;
     }
 
     public function load(ObjectManager $manager)

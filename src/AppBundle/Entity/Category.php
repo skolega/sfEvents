@@ -39,6 +39,11 @@ class Category
      * @ORM\OneToMany(targetEntity="Team", mappedBy="category")
      */
     private $team;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="CategoryType", inversedBy="category")
+     */
+    private $categoryType;
 
     /**
      * @var string
@@ -245,5 +250,28 @@ class Category
     public function getTeam()
     {
         return $this->team;
+    }
+
+    /**
+     * Set satCategoryType
+     *
+     * @param \AppBundle\Entity\CategoryType $categoryType
+     * @return Category
+     */
+    public function setCategoryType(\AppBundle\Entity\CategoryType $categoryType = null)
+    {
+        $this->categoryType = $categoryType;
+
+        return $this;
+    }
+
+    /**
+     * Get categoryType
+     *
+     * @return \AppBundle\Entity\CategoryType 
+     */
+    public function getCategoryType()
+    {
+        return $this->categoryType;
     }
 }

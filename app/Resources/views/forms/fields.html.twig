@@ -1,0 +1,10 @@
+{% block datetime_widget %}
+    <div id="datetimepicker" class="input-append date">
+        {% set type = type|default('text') %}
+        {{ block('form_widget_simple') }}
+        <span class="add-on">
+            <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+            </i>
+        </span>
+    </div>
+{% endblock %}

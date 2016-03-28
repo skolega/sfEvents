@@ -12,7 +12,7 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 4;
+        return 6;
     }
 
     public function load(ObjectManager $manager)
@@ -50,6 +50,7 @@ class LoadEventData extends AbstractFixture implements OrderedFixtureInterface
             for ($i = 1; $i < $faker->numberBetween(1, 19); $i++) {
                 $event->addPlayer($this->getReference('user_' . $i));
             }
+            $event->setEventType($this->getReference('eventType'.$faker->numberBetween(1,32)));
             $this->setReference('event' . $j, $event);
             $manager->persist($event);
         }

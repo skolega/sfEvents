@@ -4,13 +4,13 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            {% for category in categories %}
+            {% for categoryType in categoryTypes %}
                 {% set eventCount = 0 %}
                 <div class="clearfix"></div>
-                <h5>{{ category.name }}</h5>                
+                <h5>{{ categoryType.name }}</h5>
 
                 {% for event in events %}
-                    {% if event.category == category %}
+                    {% if event.category in categoryType.category %}
                         {% set eventCount = eventCount+1 %}
                         {% if eventCount < 5 %}
                             {% if (eventCount % 4) == 0 %}
@@ -19,7 +19,7 @@
                                 {% include 'Event/eventThumb.html.twig' %}
                                 {% if (eventCount % 4) == 0 %}
                                 </div>
-                                <a href="{{ path('events_category_list', {'category': category.id}) }}" class="button-jumpin pull-right green">Zobacz więcej w tej kategorii</a>
+                                <a href="{{ path('events_category_list', {'category': event.category.id}) }}" class="button-jumpin pull-right green">Zobacz więcej w tej kategorii</a>
                             {% endif %}
                         {% endif %}
                     {% endif %}

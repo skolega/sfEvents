@@ -11,6 +11,8 @@ class loadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
 {
     public function load(ObjectManager $manager)
     {
+        $faker = \Faker\Factory::create('pl_PL');
+        
         $categoriesNames = [
             "lightskyblue" =>"Piłka Nożna",
             "aquamarine" =>"Siatkówka",
@@ -31,6 +33,7 @@ class loadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
             $category = new Category();
             $category->setName($name);
             $category->setColor($key);
+            $category->setCategoryType($this->getReference('categoryType'.$faker->numberBetween(1,7)));
             $category->setIcon('http://lorempixel.com/200/200/sports/'.$i);
             $this->addReference('category'. $i++, $category);
             $manager->persist($category);
@@ -41,7 +44,7 @@ class loadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
 
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 
 }

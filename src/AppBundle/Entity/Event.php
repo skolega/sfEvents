@@ -91,6 +91,13 @@ class Event
      * @ORM\ManyToMany(targetEntity="Team", inversedBy="event")
      */
     private $teams;
+    
+    /**
+     * 
+     * @ORM\ManyToOne(targetEntity="EventType", inversedBy="event")
+     *
+     */
+    private $eventType;
 
     public function __toString()
     {
@@ -691,5 +698,28 @@ class Event
     public function getGames()
     {
         return $this->games;
+    }
+
+    /**
+     * Set eventType
+     *
+     * @param \AppBundle\Entity\EventType $eventType
+     * @return Event
+     */
+    public function setEventType(\AppBundle\Entity\EventType $eventType = null)
+    {
+        $this->eventType = $eventType;
+
+        return $this;
+    }
+
+    /**
+     * Get eventType
+     *
+     * @return \AppBundle\Entity\EventType 
+     */
+    public function getEventType()
+    {
+        return $this->eventType;
     }
 }

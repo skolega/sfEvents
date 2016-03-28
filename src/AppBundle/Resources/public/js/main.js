@@ -28,7 +28,8 @@ $(".place-notifications").click(function () {
 });
 
 $(function () {
-    $("#datepicker").datepicker();
+    $("#datetimepicker").datetimepicker();
+    $("#datetimepicker1").datetimepicker();
 });
 
 $(function () {
